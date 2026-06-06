@@ -1,675 +1,662 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio | Shanmukha Sai Chaitanya</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <style>
-    @media (max-width: 640px) {
-  .terminal-output {
-    font-size: 11px;
-  }
-}
-    body { background-color: #0a0a0a; margin: 0; }
-
-    /* --- NAME TEXT SHINE EFFECT --- */
-    .btn-shine {
-      background: linear-gradient(to right, #525252 0%, #10b981 20%, #06b6d4 40%, #ffffff 50%, #0ea5e9 60%, #10b981 80%, #525252 100%);
-      background-size: 200% auto;
-      background-clip: text;
-      -webkit-background-clip: text;
-      text-fill-color: transparent;
-      -webkit-text-fill-color: transparent;
-      animation: textShine 4s linear infinite;
-    }
-
-    @keyframes textShine {
-      0% { background-position: 0% center; }
-      100% { background-position: 200% center; }
-    }
-
-    /* --- 3D PROFILE PICTURE FLIP ENGINE --- */
-    .cosmic-flip-container {
-      perspective: 1200px;
-      display: block;
-    }
-
-    .cosmic-flip-card {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      animation: autoCosmicFlip 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    }
-
-    .cosmic-flip-front, .cosmic-flip-back {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .cosmic-flip-back {
-      transform: rotateY(180deg);
-    }
-
-    @keyframes autoCosmicFlip {
-      0%, 40% { transform: rotateY(0deg); }
-      50%, 90% { transform: rotateY(180deg); }
-      100% { transform: rotateY(360deg); }
-    }
-
-    /* --- PROJECT CAROUSEL 3D ENGINE --- */
-    .project-carousel-viewport {
-      perspective: 1500px;
-    }
-
-    .project-carousel-card {
-      position: relative;
-      width: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Triggered by JS layout control */
-    .project-carousel-card.project-flipped {
-      transform: rotateY(180deg);
-    }
-
-    .project-face-front, .project-face-back {
-      width: 100%;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .project-face-back {
-      position: absolute;
-      inset: 0;
-      transform: rotateY(180deg);
-    }
-
-    /* Terminal Styling */
-    .terminal-output {
-        font-family: 'Courier New', Courier, monospace;
-        color: #10b981;
-    }
-    @media (max-width: 768px) {
-  .project-face-front {
-    filter:
-      drop-shadow(0 0 20px rgba(6, 182, 212, 0.35))
-      drop-shadow(0 0 40px rgba(14, 165, 233, 0.2));
-  }
-
-  .project-face-back {
-    filter:
-      drop-shadow(0 0 20px rgba(16, 185, 129, 0.35))
-      drop-shadow(0 0 40px rgba(6, 182, 212, 0.2));
-  }
-}
-  </style>
-</head>
-<body class="relative min-h-screen text-gray-100 font-sans overflow-x-hidden">
-
-  <canvas id="flickeringCanvas" class="fixed inset-0 -z-10 h-full w-full pointer-events-none"></canvas>
-
-  <header class="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-12 flex items-center justify-between backdrop-blur-sm bg-black/5">
-    <a href="#hero" class="relative inline-block font-bold tracking-wide text-sm md:text-base transition-transform duration-300 hover:scale-105 whitespace-nowrap py-2 px-1">
-    <span class="btn-shine">
-        <span class="md:hidden">Sai</span>
-        <span class="hidden md:inline">Shanmukha Sai Chaitanya</span>
-    </span>
-    </a>
-
-    <nav id="navLinks" class="flex items-center gap-3 md:gap-4">
-      <div class="relative group">
-        <a href="#hero" data-nav="hero" 
-           class="nav-link relative inline-block p-px font-medium text-xs md:text-sm text-neutral-400 rounded-2xl transition-all duration-300 hover:scale-105" 
-           onmouseenter="if(!this.classList.contains('nav-active')) this.style.filter='drop-shadow(0 0 10px rgba(16, 185, 129, 0.4))'" 
-           onmouseleave="if(!this.classList.contains('nav-active')) this.style.filter='none'">
-          <span class="nav-rectangle-border absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[1px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-          <span class="nav-rectangle-bg relative z-10 block px-2 py-2 md:px-3 rounded-2xl bg-transparent transition-all duration-500 inner-text">Home</span>
-          <span class="underline-glow absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-[2px] bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 rounded-full opacity-0 scale-x-0 transition-all duration-300" style="transition: all 0.3s ease-in-out;"></span>
-        </a>
-      </div>
-      
-      <div class="relative group">
-        <a href="#projects" data-nav="projects" 
-           class="nav-link relative inline-block p-px font-medium text-xs md:text-sm text-neutral-400 rounded-2xl transition-all duration-300 hover:scale-105" 
-           onmouseenter="if(!this.classList.contains('nav-active')) this.style.filter='drop-shadow(0 0 10px rgba(16, 185, 129, 0.4))'" 
-           onmouseleave="if(!this.classList.contains('nav-active')) this.style.filter='none'">
-          <span class="nav-rectangle-border absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[1px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-          <span class="nav-rectangle-bg relative z-10 block px-2 py-2 md:px-3 rounded-2xl bg-transparent transition-all duration-500 inner-text">Projects</span>
-          <span class="underline-glow absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-[2px] bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 rounded-full opacity-0 scale-x-0 transition-all duration-300" style="transition: all 0.3s ease-in-out;"></span>
-        </a>
-      </div>
-
-      <div class="relative group">
-        <a href="#skills" data-nav="skills" 
-           class="nav-link relative inline-block p-px font-medium text-xs md:text-sm text-neutral-400 rounded-2xl transition-all duration-300 hover:scale-105" 
-           onmouseenter="if(!this.classList.contains('nav-active')) this.style.filter='drop-shadow(0 0 10px rgba(16, 185, 129, 0.4))'" 
-           onmouseleave="if(!this.classList.contains('nav-active')) this.style.filter='none'">
-          <span class="nav-rectangle-border absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[1px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-          <span class="nav-rectangle-bg relative z-10 block px-2 py-2 md:px-3 rounded-2xl bg-transparent transition-all duration-500 inner-text">Skills</span>
-          <span class="underline-glow absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-[2px] bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 rounded-full opacity-0 scale-x-0 transition-all duration-300" style="transition: all 0.3s ease-in-out;"></span>
-        </a>
-      </div>
-
-      <div class="relative group">
-        <a href="#contact" data-nav="contact" 
-           class="nav-link relative inline-block p-px font-medium text-xs md:text-sm text-neutral-400 rounded-2xl transition-all duration-300 hover:scale-105" 
-           onmouseenter="if(!this.classList.contains('nav-active')) this.style.filter='drop-shadow(0 0 10px rgba(16, 185, 129, 0.4))'" 
-           onmouseleave="if(!this.classList.contains('nav-active')) this.style.filter='none'">
-          <span class="nav-rectangle-border absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[1px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-          <span class="nav-rectangle-bg relative z-10 block px-2 py-2 md:px-3 rounded-2xl bg-transparent transition-all duration-500 inner-text">Contact</span>
-          <span class="underline-glow absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-[2px] bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 rounded-full opacity-0 scale-x-0 transition-all duration-300" style="transition: all 0.3s ease-in-out;"></span>
-        </a>
-      </div>
-    </nav>
-  </header>
-  <main class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-    
-    <section id="hero" class="min-h-screen flex flex-col justify-center items-center md:items-start text-center md:text-left gap-6 pt-28 md:pt-32 pb-16">
-      <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1 text-xs font-medium text-emerald-400">
-        <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Ready for the next challenge
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full items-center">
-        <div class="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
-          <h1 class="text-3xl sm:text-4xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent">
-            Engineered for speed. Designed for precision.
-          </h1>
-          <p class="text-sm sm:text-base md:text-xl text-neutral-400 font-light leading-relaxed">
-            Driven by automation, obsessed with sleek design, and dedicated to solving challenging problems through clean frontend engineering.
-          </p>
-          <div class="flex flex-wrap items-center gap-4 mt-4 self-center md:self-start">
-  
-  <div class="relative group">
-    <a href="#projects" class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95" style="transition: all 0.3s ease-in-out;" onmouseenter="this.style.filter='drop-shadow(0 0 12px rgba(16, 185, 129, 0.45)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.25))'" onmouseleave="this.style.filter='none'">
-      <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-      <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950 border border-neutral-900/50">
-        <div class="relative z-10 flex items-center space-x-3">
-          <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Begin Journey</span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300"><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path></svg>
-        </div>
-      </span>
-    </a>
-  </div>
-
-  <div class="relative group">
-    <a href="sourcre/shanmukha_sai_chaitanya_resume.pdf" target="_blank" class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95" style="transition: all 0.3s ease-in-out;" onmouseenter="this.style.filter='drop-shadow(0 0 12px rgba(16, 185, 129, 0.45)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.25))'" onmouseleave="this.style.filter='none'">
-      <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-      <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950 border border-neutral-900/50">
-        <div class="relative z-10 flex items-center space-x-3">
-          <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Resume</span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path></svg>
-        </div>
-      </span>
-    </a>
-  </div>
-</div>
-        </div>
-
-        
-
-        <div class="lg:col-span-5 flex justify-center items-center order-1 lg:order-2">
-          <div class="relative group w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full transition-all duration-500 hover:scale-[1.03]"
-               style="transition: all 0.3s ease-in-out;"
-               onmouseenter="this.style.filter='drop-shadow(0 0 30px rgba(16, 185, 129, 0.45))'"
-               onmouseleave="this.style.filter='none'">
-            <div class="cosmic-flip-container w-full h-full relative z-10 p-1.5">
-              <div class="cosmic-flip-card">
-                <div class="cosmic-flip-front rounded-full bg-neutral-950 border border-neutral-900/50 overflow-hidden w-full h-full flex items-center justify-center">
-                  <img src="Images/photo_2026-06-05_21-02-48.jpg" alt="Profile Front B&W" class="w-full h-full aspect-square object-cover rounded-full filter grayscale contrast-125">
-                </div>
-                <div class="cosmic-flip-back rounded-full bg-neutral-950 border border-neutral-900/50 overflow-hidden w-full h-full flex items-center justify-center">
-                  <img src="Images/photo_2026-06-05_21-02-48.jpg" alt="Profile Back Color" class="w-full h-full aspect-square object-cover rounded-full filter contrast-110">
-                </div>
-              </div>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Portfolio | Shanmukha Sai Chaitanya</title>
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+      <style>
+         @media (max-width: 640px) {
+         .terminal-output {
+         font-size: 11px;
+         }
+         }
+         body { background-color: #0a0a0a; margin: 0; }
+         /* --- NAME TEXT SHINE EFFECT --- */
+         .btn-shine {
+         background: linear-gradient(to right, #525252 0%, #10b981 20%, #06b6d4 40%, #ffffff 50%, #0ea5e9 60%, #10b981 80%, #525252 100%);
+         background-size: 200% auto;
+         background-clip: text;
+         -webkit-background-clip: text;
+         text-fill-color: transparent;
+         -webkit-text-fill-color: transparent;
+         animation: textShine 4s linear infinite;
+         }
+         @keyframes textShine {
+         0% { background-position: 0% center; }
+         100% { background-position: 200% center; }
+         }
+         /* --- 3D PROFILE PICTURE FLIP ENGINE --- */
+         .cosmic-flip-container {
+         perspective: 1200px;
+         display: block;
+         }
+         .cosmic-flip-card {
+         position: relative;
+         width: 100%;
+         height: 100%;
+         transform-style: preserve-3d;
+         animation: autoCosmicFlip 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+         }
+         .cosmic-flip-front, .cosmic-flip-back {
+         position: absolute;
+         inset: 0;
+         width: 100%;
+         height: 100%;
+         backface-visibility: hidden;
+         -webkit-backface-visibility: hidden;
+         }
+         .cosmic-flip-back {
+         transform: rotateY(180deg);
+         }
+         @keyframes autoCosmicFlip {
+         0%, 40% { transform: rotateY(0deg); }
+         50%, 90% { transform: rotateY(180deg); }
+         100% { transform: rotateY(360deg); }
+         }
+         /* --- PROJECT CAROUSEL 3D ENGINE --- */
+         .project-carousel-viewport {
+         perspective: 1500px;
+         }
+         .project-carousel-card {
+         position: relative;
+         width: 100%;
+         transform-style: preserve-3d;
+         transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+         }
+         /* Triggered by JS layout control */
+         .project-carousel-card.project-flipped {
+         transform: rotateY(180deg);
+         }
+         .project-face-front, .project-face-back {
+         width: 100%;
+         backface-visibility: hidden;
+         -webkit-backface-visibility: hidden;
+         }
+         .project-face-back {
+         position: absolute;
+         inset: 0;
+         transform: rotateY(180deg);
+         }
+         /* Terminal Styling */
+         .terminal-output {
+         font-family: 'Courier New', Courier, monospace;
+         color: #10b981;
+         }
+         @media (max-width: 768px) {
+         .project-face-front {
+         filter:
+         drop-shadow(0 0 20px rgba(6, 182, 212, 0.35))
+         drop-shadow(0 0 40px rgba(14, 165, 233, 0.2));
+         }
+         .project-face-back {
+         filter:
+         drop-shadow(0 0 20px rgba(16, 185, 129, 0.35))
+         drop-shadow(0 0 40px rgba(6, 182, 212, 0.2));
+         }
+         }
+         /* Base Style for all tags */
+         .tech-tag {
+         display: inline-flex;
+         align-items: center;
+         padding: 0.25rem 0.625rem;
+         font-family: monospace;
+         font-size: 0.75rem;
+         background-color: rgba(9, 9, 11, 0.6);
+         border: 1px solid #27272a;
+         color: #a3a3a3;
+         border-radius: 0.375rem;
+         transition: all 0.3s ease;
+         cursor: default;
+         }
+         /* Global Hover effect (lifts the tag slightly and turns text white) */
+         .tech-tag:hover {
+         transform: translateY(-2px);
+         border-color: currentColor;
+         color: #ffffff;
+         }
+         /* Specific Colors on Hover */
+         .tag-aosp:hover { color: #22d3ee; border-color: #22d3ee; }
+         .tag-gcp:hover { color: #4285f4; border-color: #4285f4; }
+         .tag-bash:hover { color: #4ade80; border-color: #4ade80; }
+         .tag-git:hover { color: #f97316; border-color: #f97316; }
+         .tag-vertex:hover { color: #a855f7; border-color: #a855f7; }
+         .tag-python:hover { color: #3776ab; border-color: #3776ab; }
+         .tag-linux:hover { color: #fcc624; border-color: #fcc624; }
+         .tag-security:hover { color: #f43f5e; border-color: #f43f5e; }
+         /* Adding one for Network Security since your code was missing it! */
+         .tag-netsec:hover { color: #10b981; border-color: #10b981; }
+      </style>
+   </head>
+   <body class="relative min-h-screen text-gray-100 font-sans overflow-x-hidden">
+      <canvas id="flickeringCanvas" class="fixed inset-0 -z-10 h-full w-full pointer-events-none"></canvas>
+      <header class="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-12 flex items-center justify-between backdrop-blur-sm bg-black/5">
+         <a href="#hero" class="relative inline-block font-bold tracking-wide text-sm md:text-base transition-transform duration-300 hover:scale-105 whitespace-nowrap py-2 px-1">
+         <span class="btn-shine">
+         <span class="md:hidden">Sai</span>
+         <span class="hidden md:inline">Shanmukha Sai Chaitanya</span>
+         </span>
+         </a>
+         <nav id="navLinks" class="flex items-center gap-3 md:gap-4">
+            <div class="relative group">
+               <a href="#hero" data-nav="hero" 
+                  class="nav-link relative inline-block p-px font-medium text-xs md:text-sm text-neutral-400 rounded-2xl transition-all duration-300 hover:scale-105" 
+                  onmouseenter="if(!this.classList.contains('nav-active')) this.style.filter='drop-shadow(0 0 10px rgba(16, 185, 129, 0.4))'" 
+                  onmouseleave="if(!this.classList.contains('nav-active')) this.style.filter='none'">
+               <span class="nav-rectangle-border absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[1px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+               <span class="nav-rectangle-bg relative z-10 block px-2 py-2 md:px-3 rounded-2xl bg-transparent transition-all duration-500 inner-text">Home</span>
+               <span class="underline-glow absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-[2px] bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 rounded-full opacity-0 scale-x-0 transition-all duration-300" style="transition: all 0.3s ease-in-out;"></span>
+               </a>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="min-h-screen py-32 flex flex-col justify-center">
-      <div class="mb-12 flex items-end justify-between w-full">
-        <div>
-          <h2 class="text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-2">Selected Work</h2>
-          <p class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">Featured Projects</p>
-        </div>
-        
-        <button onclick="toggleProjectFlip()" class="group relative flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-900 border border-neutral-800 text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-emerald-500/50 cursor-pointer" style="box-shadow: 0 4px 12px rgba(0,0,0,0.55);">
-          <span class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="relative z-10 w-5 h-5 group-hover:text-emerald-300 group-hover:translate-x-0.5 transition-all duration-300">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5l6 6m0 0l-6 6m6-6H3.75" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="project-carousel-viewport w-full">
-        <div id="projectCardEngine" class="project-carousel-card">
-          
-          <div class="project-face-front group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2" 
-             onmouseenter="this.style.filter='drop-shadow(0 0 20px rgba(6, 182, 212, 0.4))'" 
-             onmouseleave="this.style.filter='none'">
-            
-            <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-500 to-indigo-600 opacity-30 group-hover:opacity-100 transition-opacity duration-500"></span>
-            
-            <div class="relative w-full h-full bg-neutral-900 rounded-2xl p-6 md:p-8">
-                
-                <div class="terminal-output relative w-full h-56 rounded-xl bg-black border border-neutral-800/50 mb-6 p-4 overflow-hidden text-sm md:text-base">
-                    <div class="flex items-center space-x-2 mb-3 border-b border-neutral-800/50 pb-2">
-                        <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
-                        <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
-                        <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-neutral-500">Sai@devbox:~/Infy$ source build/envsetup.sh && lunch aosp_rmgtn2-userdebug</p>
-                        <p>[INFO] Starting build for Android 16... </p>
-                        <p>[INFO] Parsing manifests and optimizing kernel.</p>
-                        <p class="text-emerald-400 font-bold">[BUILD SUCCESS] target Filesystem: Infinity-X_Bitra-ota.zip</p>
-                    </div>
-                </div>
-
-                <h3 class="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-4">Android Open Source Project (AOSP)</h3>
-                
-                <ul class="space-y-3 text-neutral-400 text-sm md:text-base font-light leading-relaxed mb-6">
-                  <li class="flex items-start gap-2.5"><span class="text-cyan-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0"></span>Built AOSP from source and ported custom ROMs for Realme GT Neo 2, optimizing for kernel stability.</li>
-                  <li class="flex items-start gap-2.5"><span class="text-cyan-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0"></span>Utilized ADB Logcat and MIO for deep system-level debugging and security troubleshooting.</li>
-                  <li class="flex items-start gap-2.5"><span class="text-cyan-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0"></span>Leveraged Google Cloud Platform (GCP) for automated build environments and high-speed compilation.</li>
-                </ul>
-
-                <div class="flex flex-wrap gap-2">
-                  <span class="text-xs font-mono bg-neutral-900/60 text-cyan-400 border border-cyan-500/20 px-2.5 py-1 rounded-md">AOSP</span>
-                  <span class="text-xs font-mono bg-neutral-900/60 text-neutral-400 border border-neutral-800 px-2.5 py-1 rounded-md">GCP</span>
-                  <span class="text-xs font-mono bg-neutral-900/60 text-neutral-400 border border-neutral-800 px-2.5 py-1 rounded-md">Bash Scripting</span>
-                  <span class="text-xs font-mono bg-neutral-900/60 text-neutral-400 border border-neutral-800 px-2.5 py-1 rounded-md">Git/GitHub</span>
-                  <span class="text-xs font-mono bg-neutral-900/60 text-neutral-400 border border-neutral-800 px-2.5 py-1 rounded-md">Vertex AI</span>
-                </div>
+            <div class="relative group">
+               <a href="#projects" data-nav="projects" 
+                  class="nav-link relative inline-block p-px font-medium text-xs md:text-sm text-neutral-400 rounded-2xl transition-all duration-300 hover:scale-105" 
+                  onmouseenter="if(!this.classList.contains('nav-active')) this.style.filter='drop-shadow(0 0 10px rgba(16, 185, 129, 0.4))'" 
+                  onmouseleave="if(!this.classList.contains('nav-active')) this.style.filter='none'">
+               <span class="nav-rectangle-border absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[1px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+               <span class="nav-rectangle-bg relative z-10 block px-2 py-2 md:px-3 rounded-2xl bg-transparent transition-all duration-500 inner-text">Projects</span>
+               <span class="underline-glow absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-[2px] bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 rounded-full opacity-0 scale-x-0 transition-all duration-300" style="transition: all 0.3s ease-in-out;"></span>
+               </a>
             </div>
-          </div>
-
-          <div class="project-face-back group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2" 
-             onmouseenter="this.style.filter='drop-shadow(0 0 20px rgba(16, 185, 129, 0.4))'" 
-             onmouseleave="this.style.filter='none'">
-            
-            <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 opacity-30 group-hover:opacity-100 transition-opacity duration-500"></span>
-            
-            <div class="relative w-full h-full bg-neutral-900 rounded-2xl p-6 md:p-8">
-                
-                <div class="terminal-output relative w-full h-56 rounded-xl bg-black border border-neutral-800/50 mb-6 p-4 overflow-hidden text-sm md:text-base">
-                    <div class="flex items-center space-x-2 mb-3 border-b border-neutral-800/50 pb-2">
-                        <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
-                        <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
-                        <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-neutral-500">root@logengine-vm:~$ tail -f /var/log/syslog</p>
-                        <p>[INFO] Ingested 1500 logs. No threats detected.</p>
-                        <p class="text-amber-400">[WARN] Unrecognized user 'oracle' from 192.168.1.100.</p>
-                        <p class="text-emerald-400 font-bold">[MITRE ATT&CK] T1078 Mapping identified: Valid Accounts.</p>
-                        <p>[INFO] Continuing log stream...</p>
-                    </div>
-                </div>
-
-                <h3 class="text-2xl font-bold text-white group-hover:text-emerald-300 transition-colors mb-4">Log Detection & Alerting System</h3>
-                
-                <ul class="space-y-3 text-neutral-400 text-sm md:text-base font-light leading-relaxed mb-6">
-                  <li class="flex items-start gap-2.5"><span class="text-emerald-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0"></span>Developed a Python-based log engine that ingests and parses Linux system logs to identify security threats.</li>
-                  <li class="flex items-start gap-2.5"><span class="text-emerald-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0"></span>Implemented detection rules for brute-force attacks, privilege escalation, and unauthorized port scanning.</li>
-                  <li class="flex items-start gap-2.5"><span class="text-emerald-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0"></span>Integrated MITRE ATT&CK mapping to categorize incidents and built an automated alert generation system.</li>
-                </ul>
-
-                <div class="flex flex-wrap gap-2">
-                  <span class="text-xs font-mono bg-neutral-900/60 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-md">Python</span>
-                  <span class="text-xs font-mono bg-neutral-900/60 text-neutral-400 border border-neutral-800 px-2.5 py-1 rounded-md">Linux</span>
-                  <span class="text-xs font-mono bg-neutral-900/60 text-neutral-400 border border-neutral-800 px-2.5 py-1 rounded-md">CyberSecurity</span>
-                  <span class="text-xs font-mono bg-neutral-900/60 text-neutral-400 border border-neutral-800 px-2.5 py-1 rounded-md">Git</span>
-                  <span class="text-xs font-mono bg-neutral-900/60 text-neutral-400 border border-neutral-800 px-2.5 py-1 rounded-md">Network Security</span>
-                </div>
+            <div class="relative group">
+               <a href="#skills" data-nav="skills" 
+                  class="nav-link relative inline-block p-px font-medium text-xs md:text-sm text-neutral-400 rounded-2xl transition-all duration-300 hover:scale-105" 
+                  onmouseenter="if(!this.classList.contains('nav-active')) this.style.filter='drop-shadow(0 0 10px rgba(16, 185, 129, 0.4))'" 
+                  onmouseleave="if(!this.classList.contains('nav-active')) this.style.filter='none'">
+               <span class="nav-rectangle-border absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[1px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+               <span class="nav-rectangle-bg relative z-10 block px-2 py-2 md:px-3 rounded-2xl bg-transparent transition-all duration-500 inner-text">Skills</span>
+               <span class="underline-glow absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-[2px] bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 rounded-full opacity-0 scale-x-0 transition-all duration-300" style="transition: all 0.3s ease-in-out;"></span>
+               </a>
             </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <section id="skills" class="min-h-screen py-32 flex flex-col justify-center items-center">
-      <div class="mb-12 w-full max-w-3xl flex items-end justify-between px-4">
-        <div>
-          <h2 class="text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-2">Technical Arsenal</h2>
-          <p class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">Core Competencies</p>
-        </div>
-        
-        <div class="flex gap-4 relative z-50">
-          
-          <button onclick="prevSkill()" class="group relative flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer" style="box-shadow: 0 4px 12px rgba(0,0,0,0.55);" onmouseenter="this.style.filter='drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))'" onmouseleave="this.style.filter='none'">
-            <span class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-            <div class="absolute inset-[1px] bg-neutral-900 rounded-xl z-0"></div>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="relative z-10 w-5 h-5 group-hover:text-emerald-300 group-hover:-translate-x-0.5 transition-all duration-300">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-          </button>
-          
-          <button onclick="nextSkill()" class="group relative flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer" style="box-shadow: 0 4px 12px rgba(0,0,0,0.55);" onmouseenter="this.style.filter='drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))'" onmouseleave="this.style.filter='none'">
-            <span class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-            <div class="absolute inset-[1px] bg-neutral-900 rounded-xl z-0"></div>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="relative z-10 w-5 h-5 group-hover:text-emerald-300 group-hover:translate-x-0.5 transition-all duration-300">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-          </button>
-
-        </div>
-      </div>
-
-      <div class="relative w-full max-w-2xl h-[520px] sm:h-[450px] md:h-[350px] mx-auto perspective-1000">
-        
-        <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(16, 185, 129, 0.4)">
-          <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-emerald-500/50 to-transparent opacity-30"></span>
-          <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
-            <div class="mb-6 flex items-center gap-4">
-              <div class="p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20 text-emerald-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-white">Systems & Security</h3>
+            <div class="relative group">
+               <a href="#contact" data-nav="contact" 
+                  class="nav-link relative inline-block p-px font-medium text-xs md:text-sm text-neutral-400 rounded-2xl transition-all duration-300 hover:scale-105" 
+                  onmouseenter="if(!this.classList.contains('nav-active')) this.style.filter='drop-shadow(0 0 10px rgba(16, 185, 129, 0.4))'" 
+                  onmouseleave="if(!this.classList.contains('nav-active')) this.style.filter='none'">
+               <span class="nav-rectangle-border absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[1px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+               <span class="nav-rectangle-bg relative z-10 block px-2 py-2 md:px-3 rounded-2xl bg-transparent transition-all duration-500 inner-text">Contact</span>
+               <span class="underline-glow absolute -bottom-1 left-1/2 -translate-x-1/2 w-4/5 h-[2px] bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 rounded-full opacity-0 scale-x-0 transition-all duration-300" style="transition: all 0.3s ease-in-out;"></span>
+               </a>
             </div>
-            <p class="text-neutral-400 mb-6 font-light">Deep expertise in Linux environments, system-level architecture, and implementing robust cybersecurity protocols.</p>
-            <div class="flex flex-wrap gap-3 mt-auto">
-              <span class="text-sm font-mono bg-neutral-900 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-md">Linux / Unix</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">CyberSecurity</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Network Sec</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">MITRE ATT&CK</span>
+         </nav>
+      </header>
+      <main class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+         <section id="hero" class="min-h-screen flex flex-col justify-center items-center md:items-start text-center md:text-left gap-6 pt-28 md:pt-32 pb-16">
+            <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1 text-xs font-medium text-emerald-400">
+               <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+               Ready for the next challenge
             </div>
-          </div>
-        </div>
-
-        <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(6, 182, 212, 0.4)">
-          <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/50 to-transparent opacity-30"></span>
-          <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
-            <div class="mb-6 flex items-center gap-4">
-              <div class="p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/20 text-cyan-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-white">Backend & Cloud</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full items-center">
+               <div class="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
+                  <h1 class="text-3xl sm:text-4xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent">
+                     Engineered for speed. Designed for precision.
+                  </h1>
+                  <p class="text-sm sm:text-base md:text-xl text-neutral-400 font-light leading-relaxed">
+                     Driven by automation, obsessed with sleek design, and dedicated to solving challenging problems through clean frontend engineering.
+                  </p>
+                  <div class="flex flex-wrap items-center gap-4 mt-4 self-center md:self-start">
+                     <div class="relative group">
+                        <a href="#projects" class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95" style="transition: all 0.3s ease-in-out;" onmouseenter="this.style.filter='drop-shadow(0 0 12px rgba(16, 185, 129, 0.45)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.25))'" onmouseleave="this.style.filter='none'">
+                           <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+                           <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950 border border-neutral-900/50">
+                              <div class="relative z-10 flex items-center space-x-3">
+                                 <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Begin Journey</span>
+                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
+                                    <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
+                                 </svg>
+                              </div>
+                           </span>
+                        </a>
+                     </div>
+                     <div class="relative group">
+                        <a href="sourcre/shanmukha_sai_chaitanya_resume.pdf" target="_blank" class="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95" style="transition: all 0.3s ease-in-out;" onmouseenter="this.style.filter='drop-shadow(0 0 12px rgba(16, 185, 129, 0.45)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.25))'" onmouseleave="this.style.filter='none'">
+                           <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+                           <span class="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950 border border-neutral-900/50">
+                              <div class="relative z-10 flex items-center space-x-3">
+                                 <span class="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">Resume</span>
+                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
+                                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path>
+                                 </svg>
+                              </div>
+                           </span>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+               <div class="lg:col-span-5 flex justify-center items-center order-1 lg:order-2">
+                  <div class="relative group w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full transition-all duration-500 hover:scale-[1.03]"
+                     style="transition: all 0.3s ease-in-out;"
+                     onmouseenter="this.style.filter='drop-shadow(0 0 30px rgba(16, 185, 129, 0.45))'"
+                     onmouseleave="this.style.filter='none'">
+                     <div class="cosmic-flip-container w-full h-full relative z-10 p-1.5">
+                        <div class="cosmic-flip-card">
+                           <div class="cosmic-flip-front rounded-full bg-neutral-950 border border-neutral-900/50 overflow-hidden w-full h-full flex items-center justify-center">
+                              <img src="Images/photo_2026-06-05_21-02-48.jpg" alt="Profile Front B&W" class="w-full h-full aspect-square object-cover rounded-full filter grayscale contrast-125">
+                           </div>
+                           <div class="cosmic-flip-back rounded-full bg-neutral-950 border border-neutral-900/50 overflow-hidden w-full h-full flex items-center justify-center">
+                              <img src="Images/photo_2026-06-05_21-02-48.jpg" alt="Profile Back Color" class="w-full h-full aspect-square object-cover rounded-full filter contrast-110">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
-            <p class="text-neutral-400 mb-6 font-light">Building scalable automated pipelines and managing high-performance environments on Google Cloud.</p>
-            <div class="flex flex-wrap gap-3 mt-auto">
-              <span class="text-sm font-mono bg-neutral-900 text-cyan-400 border border-cyan-500/20 px-3 py-1.5 rounded-md">Python</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Bash Scripting</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Google Cloud (GCP)</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Git / GitHub</span>
+         </section>
+         <section id="projects" class="min-h-screen py-32 flex flex-col justify-center">
+            <div class="mb-12 flex items-end justify-between w-full">
+               <div>
+                  <h2 class="text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-2">Selected Work</h2>
+                  <p class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">Featured Projects</p>
+               </div>
+               <button onclick="toggleProjectFlip()" class="group relative flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-900 border border-neutral-800 text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-emerald-500/50 cursor-pointer" style="box-shadow: 0 4px 12px rgba(0,0,0,0.55);">
+                  <span class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="relative z-10 w-5 h-5 group-hover:text-emerald-300 group-hover:translate-x-0.5 transition-all duration-300">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5l6 6m0 0l-6 6m6-6H3.75" />
+                  </svg>
+               </button>
             </div>
-          </div>
-        </div>
-
-        <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(14, 165, 233, 0.4)">
-          <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-sky-500/50 to-transparent opacity-30"></span>
-          <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
-            <div class="mb-6 flex items-center gap-4">
-              <div class="p-3 bg-sky-500/10 rounded-lg border border-sky-500/20 text-sky-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-white">Frontend & Dev Tools</h3>
+            <div class="project-carousel-viewport w-full">
+               <div id="projectCardEngine" class="project-carousel-card">
+                  <div class="project-face-front group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2" 
+                     onmouseenter="this.style.filter='drop-shadow(0 0 20px rgba(6, 182, 212, 0.4))'" 
+                     onmouseleave="this.style.filter='none'">
+                     <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-500 to-indigo-600 opacity-30 group-hover:opacity-100 transition-opacity duration-500"></span>
+                     <div class="relative w-full h-full bg-neutral-900 rounded-2xl p-6 md:p-8">
+                        <div class="terminal-output relative w-full h-56 rounded-xl bg-black border border-neutral-800/50 mb-6 p-4 overflow-hidden text-sm md:text-base">
+                           <div class="flex items-center space-x-2 mb-3 border-b border-neutral-800/50 pb-2">
+                              <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
+                              <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
+                              <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
+                           </div>
+                           <div class="space-y-1">
+                              <p class="text-neutral-500">Sai@devbox:~/Infy$ source build/envsetup.sh && lunch aosp_rmgtn2-userdebug</p>
+                              <p>[INFO] Starting build for Android 16... </p>
+                              <p>[INFO] Parsing manifests and optimizing kernel.</p>
+                              <p class="text-emerald-400 font-bold">[BUILD SUCCESS] target Filesystem: Infinity-X_Bitra-ota.zip</p>
+                           </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-4">Android Open Source Project (AOSP)</h3>
+                        <ul class="space-y-3 text-neutral-400 text-sm md:text-base font-light leading-relaxed mb-6">
+                           <li class="flex items-start gap-2.5"><span class="text-cyan-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0"></span>Built AOSP from source and ported custom ROMs for Realme GT Neo 2, optimizing for kernel stability.</li>
+                           <li class="flex items-start gap-2.5"><span class="text-cyan-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0"></span>Utilized ADB Logcat and MIO for deep system-level debugging and security troubleshooting.</li>
+                           <li class="flex items-start gap-2.5"><span class="text-cyan-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0"></span>Leveraged Google Cloud Platform (GCP) for automated build environments and high-speed compilation.</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2">
+                           <span class="tech-tag tag-aosp">AOSP</span>
+                           <span class="tech-tag tag-gcp">GCP</span>
+                           <span class="tech-tag tag-bash">Bash Scripting</span>
+                           <span class="tech-tag tag-git">Git/GitHub</span>
+                           <span class="tech-tag tag-vertex">Vertex AI</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="project-face-back group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2" 
+                     onmouseenter="this.style.filter='drop-shadow(0 0 20px rgba(16, 185, 129, 0.4))'" 
+                     onmouseleave="this.style.filter='none'">
+                     <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 opacity-30 group-hover:opacity-100 transition-opacity duration-500"></span>
+                     <div class="relative w-full h-full bg-neutral-900 rounded-2xl p-6 md:p-8">
+                        <div class="terminal-output relative w-full h-56 rounded-xl bg-black border border-neutral-800/50 mb-6 p-4 overflow-hidden text-sm md:text-base">
+                           <div class="flex items-center space-x-2 mb-3 border-b border-neutral-800/50 pb-2">
+                              <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
+                              <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
+                              <span class="w-3 h-3 rounded-full bg-neutral-700"></span>
+                           </div>
+                           <div class="space-y-1">
+                              <p class="text-neutral-500">root@logengine-vm:~$ tail -f /var/log/syslog</p>
+                              <p>[INFO] Ingested 1500 logs. No threats detected.</p>
+                              <p class="text-amber-400">[WARN] Unrecognized user 'oracle' from 192.168.1.100.</p>
+                              <p class="text-emerald-400 font-bold">[MITRE ATT&CK] T1078 Mapping identified: Valid Accounts.</p>
+                              <p>[INFO] Continuing log stream...</p>
+                           </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-emerald-300 transition-colors mb-4">Log Detection & Alerting System</h3>
+                        <ul class="space-y-3 text-neutral-400 text-sm md:text-base font-light leading-relaxed mb-6">
+                           <li class="flex items-start gap-2.5"><span class="text-emerald-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0"></span>Developed a Python-based log engine that ingests and parses Linux system logs to identify security threats.</li>
+                           <li class="flex items-start gap-2.5"><span class="text-emerald-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0"></span>Implemented detection rules for brute-force attacks, privilege escalation, and unauthorized port scanning.</li>
+                           <li class="flex items-start gap-2.5"><span class="text-emerald-400 mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0"></span>Integrated MITRE ATT&CK mapping to categorize incidents and built an automated alert generation system.</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                           <span class="tech-tag tag-python">Python</span>
+                           <span class="tech-tag tag-linux">Linux</span>
+                           <span class="tech-tag tag-security">CyberSecurity</span>
+                           <span class="tech-tag tag-git">Git</span>
+                           <span class="tech-tag tag-netsec">Network Security</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
-            <p class="text-neutral-400 mb-6 font-light">Crafting responsive, high-performance user interfaces and managing efficient developer workflows.</p>
-            <div class="flex flex-wrap gap-3 mt-auto">
-              <span class="text-sm font-mono bg-neutral-900 text-sky-400 border border-sky-500/20 px-3 py-1.5 rounded-md">HTML5 / CSS3</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Tailwind CSS</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">JavaScript</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Vim / Nano</span>
+         </section>
+         <section id="skills" class="min-h-screen py-32 flex flex-col justify-center items-center">
+            <div class="mb-12 w-full max-w-3xl flex items-end justify-between px-4">
+               <div>
+                  <h2 class="text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-2">Technical Arsenal</h2>
+                  <p class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">Core Competencies</p>
+               </div>
+               <div class="flex gap-4 relative z-50">
+                  <button onclick="prevSkill()" class="group relative flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer" style="box-shadow: 0 4px 12px rgba(0,0,0,0.55);" onmouseenter="this.style.filter='drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))'" onmouseleave="this.style.filter='none'">
+                     <span class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                     <div class="absolute inset-[1px] bg-neutral-900 rounded-xl z-0"></div>
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="relative z-10 w-5 h-5 group-hover:text-emerald-300 group-hover:-translate-x-0.5 transition-all duration-300">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                     </svg>
+                  </button>
+                  <button onclick="nextSkill()" class="group relative flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer" style="box-shadow: 0 4px 12px rgba(0,0,0,0.55);" onmouseenter="this.style.filter='drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))'" onmouseleave="this.style.filter='none'">
+                     <span class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                     <div class="absolute inset-[1px] bg-neutral-900 rounded-xl z-0"></div>
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="relative z-10 w-5 h-5 group-hover:text-emerald-300 group-hover:translate-x-0.5 transition-all duration-300">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                     </svg>
+                  </button>
+               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(168, 85, 247, 0.4)">
-          <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/50 to-transparent opacity-30"></span>
-          <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
-            <div class="mb-6 flex items-center gap-4">
-              <div class="p-3 bg-purple-500/10 rounded-lg border border-purple-500/20 text-purple-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-white">AI & Machine Learning</h3>
+            <div class="relative w-full max-w-2xl h-[520px] sm:h-[450px] md:h-[350px] mx-auto perspective-1000">
+               <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(16, 185, 129, 0.4)">
+                  <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-emerald-500/50 to-transparent opacity-30"></span>
+                  <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
+                     <div class="mb-6 flex items-center gap-4">
+                        <div class="p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20 text-emerald-400">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                           </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Systems & Security</h3>
+                     </div>
+                     <p class="text-neutral-400 mb-6 font-light">Deep expertise in Linux environments, system-level architecture, and implementing robust cybersecurity protocols.</p>
+                     <div class="flex flex-wrap gap-3 mt-auto">
+                        <span class="text-sm font-mono bg-neutral-900 text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-md">Linux / Unix</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">CyberSecurity</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Network Sec</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">MITRE ATT&CK</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(6, 182, 212, 0.4)">
+                  <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/50 to-transparent opacity-30"></span>
+                  <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
+                     <div class="mb-6 flex items-center gap-4">
+                        <div class="p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/20 text-cyan-400">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                           </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Backend & Cloud</h3>
+                     </div>
+                     <p class="text-neutral-400 mb-6 font-light">Building scalable automated pipelines and managing high-performance environments on Google Cloud.</p>
+                     <div class="flex flex-wrap gap-3 mt-auto">
+                        <span class="text-sm font-mono bg-neutral-900 text-cyan-400 border border-cyan-500/20 px-3 py-1.5 rounded-md">Python</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Bash Scripting</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Google Cloud (GCP)</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Git / GitHub</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(14, 165, 233, 0.4)">
+                  <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-sky-500/50 to-transparent opacity-30"></span>
+                  <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
+                     <div class="mb-6 flex items-center gap-4">
+                        <div class="p-3 bg-sky-500/10 rounded-lg border border-sky-500/20 text-sky-400">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                           </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Frontend & Dev Tools</h3>
+                     </div>
+                     <p class="text-neutral-400 mb-6 font-light">Crafting responsive, high-performance user interfaces and managing efficient developer workflows.</p>
+                     <div class="flex flex-wrap gap-3 mt-auto">
+                        <span class="text-sm font-mono bg-neutral-900 text-sky-400 border border-sky-500/20 px-3 py-1.5 rounded-md">HTML5 / CSS3</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Tailwind CSS</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">JavaScript</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Vim / Nano</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(168, 85, 247, 0.4)">
+                  <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/50 to-transparent opacity-30"></span>
+                  <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
+                     <div class="mb-6 flex items-center gap-4">
+                        <div class="p-3 bg-purple-500/10 rounded-lg border border-purple-500/20 text-purple-400">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                           </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">AI & Machine Learning</h3>
+                     </div>
+                     <p class="text-neutral-400 mb-6 font-light">Leveraging artificial intelligence platforms to create predictive models and automated data pipelines.</p>
+                     <div class="flex flex-wrap gap-3 mt-auto">
+                        <span class="text-sm font-mono bg-neutral-900 text-purple-400 border border-purple-500/20 px-3 py-1.5 rounded-md">Artificial Intelligence</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Machine Learning</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Vertex AI</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Data Pipelines</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(245, 158, 11, 0.4)">
+                  <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-500/50 to-transparent opacity-30"></span>
+                  <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
+                     <div class="mb-6 flex items-center gap-4">
+                        <div class="p-3 bg-amber-500/10 rounded-lg border border-amber-500/20 text-amber-400">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-6 18.75h9" />
+                           </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">App & Web Engineering</h3>
+                     </div>
+                     <p class="text-neutral-400 mb-6 font-light">Compiling source code for custom Android ROMs and developing full-featured mobile & web applications.</p>
+                     <div class="flex flex-wrap gap-3 mt-auto">
+                        <span class="text-sm font-mono bg-neutral-900 text-amber-400 border border-amber-500/20 px-3 py-1.5 rounded-md">Android Dev</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">AOSP Architecture</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Web Apps</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">ADB Debugging</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(236, 72, 153, 0.4)">
+                  <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-pink-500/50 to-transparent opacity-30"></span>
+                  <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
+                     <div class="mb-6 flex items-center gap-4">
+                        <div class="p-3 bg-pink-500/10 rounded-lg border border-pink-500/20 text-pink-400">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.879-3.879a1.5 1.5 0 00-2.121-2.121l-3.879 3.879a15.995 15.995 0 00-4.648 4.764m3.869-3.869a4.5 4.5 0 01-1.5 1.5" />
+                           </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">UI / UX Design</h3>
+                     </div>
+                     <p class="text-neutral-400 mb-6 font-light">Translating complex logic into intuitive, visually appealing interfaces using industry-standard design tools.</p>
+                     <div class="flex flex-wrap gap-3 mt-auto">
+                        <span class="text-sm font-mono bg-neutral-900 text-pink-400 border border-pink-500/20 px-3 py-1.5 rounded-md">UI / UX Design</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Prototyping</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Wireframing</span>
+                        <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Figma</span>
+                     </div>
+                  </div>
+               </div>
             </div>
-            <p class="text-neutral-400 mb-6 font-light">Leveraging artificial intelligence platforms to create predictive models and automated data pipelines.</p>
-            <div class="flex flex-wrap gap-3 mt-auto">
-              <span class="text-sm font-mono bg-neutral-900 text-purple-400 border border-purple-500/20 px-3 py-1.5 rounded-md">Artificial Intelligence</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Machine Learning</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Vertex AI</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Data Pipelines</span>
+         </section>
+         <section id="contact" class="min-h-screen py-32 flex flex-col justify-center items-center text-center relative z-10">
+            <div class="mb-12 flex flex-col items-center">
+               <h2 class="text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-2">Endgame</h2>
+               <p class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">Initiate Connection</p>
             </div>
-          </div>
-        </div>
-
-        <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(245, 158, 11, 0.4)">
-          <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-500/50 to-transparent opacity-30"></span>
-          <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
-            <div class="mb-6 flex items-center gap-4">
-              <div class="p-3 bg-amber-500/10 rounded-lg border border-amber-500/20 text-amber-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-6 18.75h9" /></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-white">App & Web Engineering</h3>
+            <p class="text-neutral-400 max-w-xl mb-12 font-light leading-relaxed">
+               Whether you have a challenging project, a high-performance role that needs filling, or just want to talk system architecture — my digital inbox is always open.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 items-center justify-center">
+               <a href="https://mail.google.com/mail/?view=cm&fs=1&to=pothulashanmukhasaichaitanya@gmail.com" target="_blank" class="group relative inline-block p-px font-semibold rounded-2xl transition-transform duration-300 hover:scale-105" onmouseenter="this.style.filter='drop-shadow(0 0 30px rgba(16, 185, 129, 0.4))'" onmouseleave="this.style.filter='none'">
+                  <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></span>
+                  <span class="relative z-10 flex items-center gap-3 px-8 py-4 rounded-2xl bg-neutral-950 text-white tracking-wide border border-neutral-900/50 group-hover:text-emerald-300 transition-colors duration-500">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                     </svg>
+                     Execute handshake
+                  </span>
+               </a>
+               <div class="flex gap-4">
+                  <a href="https://github.com/Saichaitanya888" target="_blank" class="p-4 rounded-2xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-cyan-500/50 transition-all duration-300 hover:scale-110" onmouseenter="this.style.filter='drop-shadow(0 0 15px rgba(6, 182, 212, 0.4))'" onmouseleave="this.style.filter='none'">
+                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                     </svg>
+                  </a>
+                  <a href="https://t.me/Saichaitanya888" target="_blank" class="p-4 rounded-2xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-sky-500/50 transition-all duration-300 hover:scale-110" onmouseenter="this.style.filter='drop-shadow(0 0 15px rgba(14, 165, 233, 0.4))'" onmouseleave="this.style.filter='none'">
+                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                     </svg>
+                  </a>
+               </div>
             </div>
-            <p class="text-neutral-400 mb-6 font-light">Compiling source code for custom Android ROMs and developing full-featured mobile & web applications.</p>
-            <div class="flex flex-wrap gap-3 mt-auto">
-              <span class="text-sm font-mono bg-neutral-900 text-amber-400 border border-amber-500/20 px-3 py-1.5 rounded-md">Android Dev</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">AOSP Architecture</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Web Apps</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">ADB Debugging</span>
+            <div class="mt-32 border-t border-neutral-900 w-full flex justify-center pt-8">
+               <p class="text-xs text-neutral-600 font-mono">Designed & Engineered by Shanmukha Sai Chaitanya © <span id="year"></span></p>
             </div>
-          </div>
-        </div>
-
-        <div class="skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-top rounded-2xl p-[1px]" data-glow="rgba(236, 72, 153, 0.4)">
-          <span class="absolute inset-0 rounded-2xl bg-gradient-to-br from-pink-500/50 to-transparent opacity-30"></span>
-          <div class="relative w-full h-full bg-neutral-950 rounded-2xl p-8 flex flex-col">
-            <div class="mb-6 flex items-center gap-4">
-              <div class="p-3 bg-pink-500/10 rounded-lg border border-pink-500/20 text-pink-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.879-3.879a1.5 1.5 0 00-2.121-2.121l-3.879 3.879a15.995 15.995 0 00-4.648 4.764m3.869-3.869a4.5 4.5 0 01-1.5 1.5" /></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-white">UI / UX Design</h3>
-            </div>
-            <p class="text-neutral-400 mb-6 font-light">Translating complex logic into intuitive, visually appealing interfaces using industry-standard design tools.</p>
-            <div class="flex flex-wrap gap-3 mt-auto">
-              <span class="text-sm font-mono bg-neutral-900 text-pink-400 border border-pink-500/20 px-3 py-1.5 rounded-md">UI / UX Design</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Prototyping</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Wireframing</span>
-              <span class="text-sm font-mono bg-neutral-900 text-neutral-300 border border-neutral-800 px-3 py-1.5 rounded-md">Figma</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-    <section id="contact" class="min-h-screen py-32 flex flex-col justify-center items-center text-center relative z-10">
-      <div class="mb-12 flex flex-col items-center">
-        <h2 class="text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-2">Endgame</h2>
-        <p class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">Initiate Connection</p>
-      </div>
-
-      <p class="text-neutral-400 max-w-xl mb-12 font-light leading-relaxed">
-        Whether you have a challenging project, a high-performance role that needs filling, or just want to talk system architecture — my digital inbox is always open.
-      </p>
-
-      <div class="flex flex-col sm:flex-row gap-6 items-center justify-center">
-        
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=pothulashanmukhasaichaitanya@gmail.com" target="_blank" class="group relative inline-block p-px font-semibold rounded-2xl transition-transform duration-300 hover:scale-105" onmouseenter="this.style.filter='drop-shadow(0 0 30px rgba(16, 185, 129, 0.4))'" onmouseleave="this.style.filter='none'">
-          <span class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></span>
-          <span class="relative z-10 flex items-center gap-3 px-8 py-4 rounded-2xl bg-neutral-950 text-white tracking-wide border border-neutral-900/50 group-hover:text-emerald-300 transition-colors duration-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
-            Execute handshake
-          </span>
-        </a>
-
-        <div class="flex gap-4">
-          <a href="https://github.com/Saichaitanya888" target="_blank" class="p-4 rounded-2xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-cyan-500/50 transition-all duration-300 hover:scale-110" onmouseenter="this.style.filter='drop-shadow(0 0 15px rgba(6, 182, 212, 0.4))'" onmouseleave="this.style.filter='none'">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg>
-          </a>
-          
-          <a href="https://t.me/Saichaitanya888" target="_blank" class="p-4 rounded-2xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-sky-500/50 transition-all duration-300 hover:scale-110" onmouseenter="this.style.filter='drop-shadow(0 0 15px rgba(14, 165, 233, 0.4))'" onmouseleave="this.style.filter='none'">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          </a>
-        </div>
-      </div>
-      
-      <div class="mt-32 border-t border-neutral-900 w-full flex justify-center pt-8">
-        <p class="text-xs text-neutral-600 font-mono">Designed & Engineered by Shanmukha Sai Chaitanya © <span id="year"></span></p>
-      </div>
-      <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-    </section>
-    
-  </main>
-
-  <script>
-    /* 3D CAROUSEL CONTROLLER ACTION */
-    function toggleProjectFlip() {
-      const card = document.getElementById('projectCardEngine');
-      card.classList.toggle('project-flipped');
-    }
-
-    function initNavTracker() {
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('#navLinks a[data-nav]');
-      const observerOptions = { root: null, rootMargin: '-30% 0px -60% 0px', threshold: 0 };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const activeId = entry.target.getAttribute('id');
-            navLinks.forEach((link) => {
-              const underline = link.querySelector('.underline-glow');
-              const innerText = link.querySelector('.inner-text');
-              const rectBorder = link.querySelector('.nav-rectangle-border');
-              const rectBg = link.querySelector('.nav-rectangle-bg');
-              
-              if (link.getAttribute('data-nav') === activeId) {
-                link.classList.add('nav-active', 'text-white');
-                link.classList.remove('text-neutral-400');
-                if(innerText) innerText.classList.add('text-emerald-300');
-                if(underline) underline.classList.remove('opacity-0', 'scale-x-0');
-                if(underline) underline.classList.add('opacity-100', 'scale-x-100');
-                if(rectBorder) rectBorder.classList.add('hidden');
-                if(rectBg) {
-                  rectBg.classList.remove('bg-gray-950/40', 'group-hover:bg-gray-950');
-                  rectBg.classList.add('bg-transparent');
-                }
-                link.style.filter = 'drop-shadow(0 2px 4px rgba(16, 185, 129, 0.4))';
-              } else {
-                link.classList.remove('nav-active', 'text-white');
-                link.classList.add('text-neutral-400');
-                if(innerText) innerText.classList.remove('text-emerald-300');
-                if(underline) underline.classList.remove('opacity-100', 'scale-x-100');
-                if(underline) underline.classList.add('opacity-0', 'scale-x-0');
-                if(rectBorder) rectBorder.classList.remove('hidden');
-                if(rectBg) {
-                  rectBg.classList.add('bg-gray-950/40', 'group-hover:bg-gray-950');
-                  rectBg.classList.remove('bg-transparent');
-                }
-                link.style.filter = 'none';
-              }
-            });
-          }
-        });
-      }, observerOptions);
-      sections.forEach((section) => observer.observe(section));
-    }
-
-    const canvas = document.getElementById('flickeringCanvas');
-    const ctx = canvas.getContext('2d');
-    const isMobile = window.innerWidth < 768;
-    const squareSize = isMobile ? 3 : 4;
-    const gridGap = isMobile ? 8 : 6;
-    color = { r: 107, g: 114, b: 128 }, maxOpacity = 0.35, flickerChance = 0.02, updateInterval = 80;  
-    let cols, rows, gridSquares = [], lastUpdateTime = 0;
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-      cols = Math.floor(canvas.width / (squareSize + gridGap));
-      rows = Math.floor(canvas.height / (squareSize + gridGap));
-      gridSquares = Array.from({ length: cols * rows }, () => Math.random() * maxOpacity);
-    }
-
-    function animate(currentTime) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const shouldUpdateGrid = currentTime - lastUpdateTime >= updateInterval;
-      if (shouldUpdateGrid) lastUpdateTime = currentTime;
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const index = r * cols + c;
-          if (shouldUpdateGrid && Math.random() < flickerChance) gridSquares[index] = Math.random() * maxOpacity;
-          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${gridSquares[index]})`;
-          ctx.fillRect(c * (squareSize + gridGap), r * (squareSize + gridGap), squareSize, squareSize);
-        }
-      }
-      requestAnimationFrame(animate);
-    }
-    window.addEventListener('resize', resizeCanvas); resizeCanvas(); requestAnimationFrame(animate); initNavTracker();
-
-    /* --- HORIZONTAL COVERFLOW SKILL CAROUSEL ENGINE (o<-O<-o) --- */
-    let currentSkillIndex = 0;
-    
-    function updateSkillCarousel() {
-      const cards = document.querySelectorAll('.skill-card');
-      if(cards.length === 0) return;
-      const len = cards.length;
-      
-      cards.forEach((card, index) => {
-        // Smooth 700ms transition for sliding
-        card.style.transitionDuration = '700ms';
-        card.style.transformOrigin = 'center center'; 
-        
-        if (index === currentSkillIndex) {
-          // ACTIVE CARD (CENTER 'O')
-          card.style.transform = 'translateX(0) scale(1)';
-          card.style.zIndex = 30;
-          card.style.opacity = 1;
-          const glowColor = card.getAttribute('data-glow');
-          card.style.filter = `drop-shadow(0 20px 40px ${glowColor})`;
-
-        } else if (index === (currentSkillIndex + 1) % len) {
-          // NEXT CARD (RIGHT 'o')
-          const offset = window.innerWidth < 768 ? 20 : 35;
-          card.style.transform = `translateX(${offset}%) scale(0.85)`;
-          card.style.zIndex = 20;
-          card.style.opacity = 0.4;
-          card.style.filter = 'brightness(0.5)';
-
-        } else if (index === (currentSkillIndex - 1 + len) % len) {
-          // PREV CARD (LEFT 'o')
-          const offset = window.innerWidth < 768 ? 20 : 35;
-          card.style.transform = `translateX(-${offset}%) scale(0.85)`;
-          card.style.zIndex = 20;
-          card.style.opacity = 0.4;
-          card.style.filter = 'brightness(0.5)';
-
-        } else {
-          // ALL OTHER CARDS (HIDDEN BEHIND CENTER)
-          card.style.transform = 'translateX(0) scale(0.6)';
-          card.style.zIndex = 10;
-          card.style.opacity = 0; 
-          card.style.filter = 'brightness(0.2)';
-        }
-      });
-    }
-
-    function nextSkill() {
-      const cards = document.querySelectorAll('.skill-card');
-      currentSkillIndex = (currentSkillIndex + 1) % cards.length;
-      updateSkillCarousel();
-    }
-
-    function prevSkill() {
-      const cards = document.querySelectorAll('.skill-card');
-      currentSkillIndex = (currentSkillIndex - 1 + cards.length) % cards.length;
-      updateSkillCarousel();
-    }
-
-    // Initialize the stack on load
-    updateSkillCarousel();
-  </script>
-</body>
+            <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+         </section>
+      </main>
+      <script>
+         /* 3D CAROUSEL CONTROLLER ACTION */
+         function toggleProjectFlip() {
+           const card = document.getElementById('projectCardEngine');
+           card.classList.toggle('project-flipped');
+         }
+         
+         function initNavTracker() {
+           const sections = document.querySelectorAll('section[id]');
+           const navLinks = document.querySelectorAll('#navLinks a[data-nav]');
+           const observerOptions = { root: null, rootMargin: '-30% 0px -60% 0px', threshold: 0 };
+         
+           const observer = new IntersectionObserver((entries) => {
+             entries.forEach((entry) => {
+               if (entry.isIntersecting) {
+                 const activeId = entry.target.getAttribute('id');
+                 navLinks.forEach((link) => {
+                   const underline = link.querySelector('.underline-glow');
+                   const innerText = link.querySelector('.inner-text');
+                   const rectBorder = link.querySelector('.nav-rectangle-border');
+                   const rectBg = link.querySelector('.nav-rectangle-bg');
+                   
+                   if (link.getAttribute('data-nav') === activeId) {
+                     link.classList.add('nav-active', 'text-white');
+                     link.classList.remove('text-neutral-400');
+                     if(innerText) innerText.classList.add('text-emerald-300');
+                     if(underline) underline.classList.remove('opacity-0', 'scale-x-0');
+                     if(underline) underline.classList.add('opacity-100', 'scale-x-100');
+                     if(rectBorder) rectBorder.classList.add('hidden');
+                     if(rectBg) {
+                       rectBg.classList.remove('bg-gray-950/40', 'group-hover:bg-gray-950');
+                       rectBg.classList.add('bg-transparent');
+                     }
+                     link.style.filter = 'drop-shadow(0 2px 4px rgba(16, 185, 129, 0.4))';
+                   } else {
+                     link.classList.remove('nav-active', 'text-white');
+                     link.classList.add('text-neutral-400');
+                     if(innerText) innerText.classList.remove('text-emerald-300');
+                     if(underline) underline.classList.remove('opacity-100', 'scale-x-100');
+                     if(underline) underline.classList.add('opacity-0', 'scale-x-0');
+                     if(rectBorder) rectBorder.classList.remove('hidden');
+                     if(rectBg) {
+                       rectBg.classList.add('bg-gray-950/40', 'group-hover:bg-gray-950');
+                       rectBg.classList.remove('bg-transparent');
+                     }
+                     link.style.filter = 'none';
+                   }
+                 });
+               }
+             });
+           }, observerOptions);
+           sections.forEach((section) => observer.observe(section));
+         }
+         
+         const canvas = document.getElementById('flickeringCanvas');
+         const ctx = canvas.getContext('2d');
+         const isMobile = window.innerWidth < 768;
+         const squareSize = isMobile ? 3 : 4;
+         const gridGap = isMobile ? 8 : 6;
+         color = { r: 107, g: 114, b: 128 }, maxOpacity = 0.35, flickerChance = 0.02, updateInterval = 80;  
+         let cols, rows, gridSquares = [], lastUpdateTime = 0;
+         
+         function resizeCanvas() {
+           canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+           cols = Math.floor(canvas.width / (squareSize + gridGap));
+           rows = Math.floor(canvas.height / (squareSize + gridGap));
+           gridSquares = Array.from({ length: cols * rows }, () => Math.random() * maxOpacity);
+         }
+         
+         function animate(currentTime) {
+           ctx.clearRect(0, 0, canvas.width, canvas.height);
+           const shouldUpdateGrid = currentTime - lastUpdateTime >= updateInterval;
+           if (shouldUpdateGrid) lastUpdateTime = currentTime;
+         
+           for (let r = 0; r < rows; r++) {
+             for (let c = 0; c < cols; c++) {
+               const index = r * cols + c;
+               if (shouldUpdateGrid && Math.random() < flickerChance) gridSquares[index] = Math.random() * maxOpacity;
+               ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${gridSquares[index]})`;
+               ctx.fillRect(c * (squareSize + gridGap), r * (squareSize + gridGap), squareSize, squareSize);
+             }
+           }
+           requestAnimationFrame(animate);
+         }
+         window.addEventListener('resize', resizeCanvas); resizeCanvas(); requestAnimationFrame(animate); initNavTracker();
+         
+         /* --- HORIZONTAL COVERFLOW SKILL CAROUSEL ENGINE (o<-O<-o) --- */
+         let currentSkillIndex = 0;
+         
+         function updateSkillCarousel() {
+           const cards = document.querySelectorAll('.skill-card');
+           if(cards.length === 0) return;
+           const len = cards.length;
+           
+           cards.forEach((card, index) => {
+             // Smooth 700ms transition for sliding
+             card.style.transitionDuration = '700ms';
+             card.style.transformOrigin = 'center center'; 
+             
+             if (index === currentSkillIndex) {
+               // ACTIVE CARD (CENTER 'O')
+               card.style.transform = 'translateX(0) scale(1)';
+               card.style.zIndex = 30;
+               card.style.opacity = 1;
+               const glowColor = card.getAttribute('data-glow');
+               card.style.filter = `drop-shadow(0 20px 40px ${glowColor})`;
+         
+             } else if (index === (currentSkillIndex + 1) % len) {
+               // NEXT CARD (RIGHT 'o')
+               const offset = window.innerWidth < 768 ? 20 : 35;
+               card.style.transform = `translateX(${offset}%) scale(0.85)`;
+               card.style.zIndex = 20;
+               card.style.opacity = 0.4;
+               card.style.filter = 'brightness(0.5)';
+         
+             } else if (index === (currentSkillIndex - 1 + len) % len) {
+               // PREV CARD (LEFT 'o')
+               const offset = window.innerWidth < 768 ? 20 : 35;
+               card.style.transform = `translateX(-${offset}%) scale(0.85)`;
+               card.style.zIndex = 20;
+               card.style.opacity = 0.4;
+               card.style.filter = 'brightness(0.5)';
+         
+             } else {
+               // ALL OTHER CARDS (HIDDEN BEHIND CENTER)
+               card.style.transform = 'translateX(0) scale(0.6)';
+               card.style.zIndex = 10;
+               card.style.opacity = 0; 
+               card.style.filter = 'brightness(0.2)';
+             }
+           });
+         }
+         
+         function nextSkill() {
+           const cards = document.querySelectorAll('.skill-card');
+           currentSkillIndex = (currentSkillIndex + 1) % cards.length;
+           updateSkillCarousel();
+         }
+         
+         function prevSkill() {
+           const cards = document.querySelectorAll('.skill-card');
+           currentSkillIndex = (currentSkillIndex - 1 + cards.length) % cards.length;
+           updateSkillCarousel();
+         }
+         
+         // Initialize the stack on load
+         updateSkillCarousel();
+      </script>
+   </body>
 </html>
