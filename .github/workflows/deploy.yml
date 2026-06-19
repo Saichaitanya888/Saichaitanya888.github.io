@@ -38,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build # Uploads the compiled React 'build' folder
+          path: ./dist # Uploads the compiled React 'build' folder
 
       - name: Deploy to GitHub Pages
         id: deployment
