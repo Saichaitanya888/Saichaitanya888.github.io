@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import ScrollReveal from './ScrollReveal';
 
 export default function Projects() {
@@ -6,8 +6,19 @@ export default function Projects() {
   const [isFrontHovered, setIsFrontHovered] = useState(false);
   const [isBackHovered, setIsBackHovered] = useState(false);
 
+  const lastTapRef = useRef(0);
+
   const toggleFlip = () => {
     setIsFlipped(!isFlipped);
+  };
+
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    const DOUBLE_PRESS_DELAY = 300;
+    if (now - lastTapRef.current < DOUBLE_PRESS_DELAY) {
+      toggleFlip();
+    }
+    lastTapRef.current = now;
   };
 
   const frontFilter = isFrontHovered ? 'drop-shadow(0 0 20px rgba(6, 182, 212, 0.4))' : 'none';
@@ -54,22 +65,23 @@ export default function Projects() {
           
           {/* Front Face: AOSP */}
           <div
-            className="project-face-front group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2"
+            className="project-face-front group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2 cursor-pointer"
             style={{
               filter: frontFilter,
               pointerEvents: isFlipped ? 'none' : 'auto', // disable hover actions when face is hidden
             }}
             onMouseEnter={() => setIsFrontHovered(true)}
             onMouseLeave={() => setIsFrontHovered(false)}
+            onTouchStart={handleDoubleTap}
           >
             <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-500 to-indigo-600 opacity-30 group-hover:opacity-100 transition-opacity duration-500"></span>
             <div className="relative w-full h-full bg-neutral-900 rounded-2xl p-6 md:p-8">
               {/* Terminal Box */}
               <div className="terminal-output relative w-full h-56 rounded-xl bg-black border border-neutral-800/50 mb-6 p-4 overflow-hidden text-sm md:text-base">
                 <div className="flex items-center space-x-2 mb-3 border-b border-neutral-800/50 pb-2">
-                  <span className="w-3 h-3 rounded-full bg-neutral-700"></span>
-                  <span className="w-3 h-3 rounded-full bg-neutral-700"></span>
-                  <span className="w-3 h-3 rounded-full bg-neutral-700"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#27c93f]"></span>
                 </div>
                 <div className="space-y-1">
                   <p className="text-neutral-500">
@@ -119,22 +131,23 @@ export default function Projects() {
 
           {/* Back Face: Log Detection System */}
           <div
-            className="project-face-back group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2"
+            className="project-face-back group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2 cursor-pointer"
             style={{
               filter: backFilter,
               pointerEvents: isFlipped ? 'auto' : 'none', // disable hover actions when face is hidden
             }}
             onMouseEnter={() => setIsBackHovered(true)}
             onMouseLeave={() => setIsBackHovered(false)}
+            onTouchStart={handleDoubleTap}
           >
             <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 opacity-30 group-hover:opacity-100 transition-opacity duration-500"></span>
             <div className="relative w-full h-full bg-neutral-900 rounded-2xl p-6 md:p-8">
               {/* Terminal Box */}
               <div className="terminal-output relative w-full h-56 rounded-xl bg-black border border-neutral-800/50 mb-6 p-4 overflow-hidden text-sm md:text-base">
                 <div className="flex items-center space-x-2 mb-3 border-b border-neutral-800/50 pb-2">
-                  <span className="w-3 h-3 rounded-full bg-neutral-700"></span>
-                  <span className="w-3 h-3 rounded-full bg-neutral-700"></span>
-                  <span className="w-3 h-3 rounded-full bg-neutral-700"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#27c93f]"></span>
                 </div>
                 <div className="space-y-1">
                   <p className="text-neutral-500">root@logengine-vm:~$ tail -f /var/log/syslog</p>
