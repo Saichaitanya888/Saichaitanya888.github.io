@@ -1,0 +1,146 @@
+import { useState } from 'react';
+import ScrollReveal from './ScrollReveal';
+
+export default function Hero() {
+  const [btn1Hovered, setBtn1Hovered] = useState(false);
+  const [btn2Hovered, setBtn2Hovered] = useState(false);
+  const [imgHovered, setImgHovered] = useState(false);
+
+  const buttonFilter = 'drop-shadow(0 0 12px rgba(16, 185, 129, 0.45)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.25))';
+  const imgFilter = 'drop-shadow(0 0 30px rgba(16, 185, 129, 0.45))';
+
+  return (
+    <section
+      id="hero"
+      className="min-h-screen flex flex-col justify-center items-center md:items-start text-center md:text-left gap-6 pt-28 md:pt-32 pb-16"
+    >
+      {/* Badge Indicator */}
+      <ScrollReveal animation="fade-up" delay={50}>
+        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1 text-xs font-medium text-emerald-400">
+          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          CS Graduate | Open to Opportunities
+        </div>
+      </ScrollReveal>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full items-center">
+        {/* Left Content Column */}
+        <div className="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
+          <ScrollReveal animation="fade-up" delay={100}>
+            <h1 className="text-3xl sm:text-4xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent">
+              Building Secure Systems. Automating Cloud Workflows.
+            </h1>
+          </ScrollReveal>
+          
+          <ScrollReveal animation="fade-up" delay={150}>
+            <p className="text-sm sm:text-base md:text-xl text-neutral-400 font-light leading-relaxed">
+              I am a Computer Science graduate specializing in Linux systems, Google Cloud Platform (GCP), security operations (SIEM/SOAR), and automation. I focus on optimizing kernel stability, parsing logs to track threats, and engineering reliable software solutions.
+            </p>
+          </ScrollReveal>
+
+          {/* Action Buttons */}
+          <ScrollReveal animation="fade-up" delay={200}>
+            <div className="flex flex-wrap items-center gap-4 mt-4 self-center md:self-start">
+              <div className="relative group">
+                <a
+                  href="#projects"
+                  className="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
+                  style={{
+                    transition: 'all 0.3s ease-in-out',
+                    filter: btn1Hovered ? buttonFilter : 'none',
+                  }}
+                  onMouseEnter={() => setBtn1Hovered(true)}
+                  onMouseLeave={() => setBtn1Hovered(false)}
+                >
+                  <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+                  <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950 border border-neutral-900/50">
+                    <div className="relative z-10 flex items-center space-x-3">
+                      <span className="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
+                        Begin Journey
+                      </span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-5 h-5 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300"
+                      >
+                        <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
+                      </svg>
+                    </div>
+                  </span>
+                </a>
+              </div>
+
+              <div className="relative group">
+                <a
+                  href="/sourcre/shanmukha_sai_chaitanya_resume.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
+                  style={{
+                    transition: 'all 0.3s ease-in-out',
+                    filter: btn2Hovered ? buttonFilter : 'none',
+                  }}
+                  onMouseEnter={() => setBtn2Hovered(true)}
+                  onMouseLeave={() => setBtn2Hovered(false)}
+                >
+                  <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
+                  <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950 border border-neutral-900/50">
+                    <div className="relative z-10 flex items-center space-x-3">
+                      <span className="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
+                        Resume
+                      </span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-5 h-5 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300"
+                      >
+                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path>
+                      </svg>
+                    </div>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* Right Image/Avatar Column */}
+        <div className="lg:col-span-5 flex justify-center items-center order-1 lg:order-2">
+          <ScrollReveal animation="zoom-in" delay={100}>
+            <div
+              className="relative group w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full transition-all duration-500 hover:scale-[1.03]"
+              style={{
+                transition: 'all 0.3s ease-in-out',
+                filter: imgHovered ? imgFilter : 'none',
+              }}
+              onMouseEnter={() => setImgHovered(true)}
+              onMouseLeave={() => setImgHovered(false)}
+            >
+              <div className="cosmic-flip-container w-full h-full relative z-10 p-1.5">
+                <div className="cosmic-flip-card">
+                  {/* Front (B&W Grayscale) */}
+                  <div className="cosmic-flip-front rounded-full bg-neutral-950 border border-neutral-900/50 overflow-hidden w-full h-full flex items-center justify-center">
+                    <img
+                      src="/Images/photo_2026-06-05_21-02-48.jpg"
+                      alt="Profile Front B&W"
+                      className="w-full h-full aspect-square object-cover rounded-full filter grayscale contrast-125"
+                    />
+                  </div>
+                  {/* Back (Color) */}
+                  <div className="cosmic-flip-back rounded-full bg-neutral-950 border border-neutral-900/50 overflow-hidden w-full h-full flex items-center justify-center">
+                    <img
+                      src="/Images/photo_2026-06-05_21-02-48.jpg"
+                      alt="Profile Back Color"
+                      className="w-full h-full aspect-square object-cover rounded-full filter contrast-110"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </div>
+    </section>
+  );
+}
