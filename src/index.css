@@ -174,10 +174,13 @@ body {
 }
 
 @media (max-width: 767px) {
+  .card-active {
+    transform: translateX(0) scale(0.9);
+  }
   .card-next {
-    transform: translateX(20%) scale(0.85);
+    transform: translateX(30%) scale(0.65);
   }
   .card-prev {
-    transform: translateX(-20%) scale(0.85);
+    transform: translateX(-30%) scale(0.65);
   }
 }
