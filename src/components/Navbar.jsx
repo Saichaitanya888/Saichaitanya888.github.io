@@ -10,24 +10,74 @@ export default function Navbar({ activeSection }) {
     { id: 'contact', label: 'Contact' },
   ];
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-12 flex items-center justify-between backdrop-blur-sm bg-black/5">
-      <a
-        href="#hero"
-        className="relative inline-block font-bold tracking-wide text-sm md:text-base transition-transform duration-300 hover:scale-105 whitespace-nowrap py-2 px-1"
+    <>
+      <header className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-12 flex items-center justify-between backdrop-blur-md bg-black/40 border-b border-neutral-900/40">
+        <a
+          href="#hero"
+          className="relative inline-block font-bold tracking-wide text-sm md:text-base transition-transform duration-300 hover:scale-105 whitespace-nowrap py-2 px-1"
+        >
+          <span className="btn-shine">
+            <span className="md:hidden">Sai</span>
+            <span className="hidden md:inline">Shanmukha Sai Chaitanya</span>
+          </span>
+        </a>
+
+        {/* Desktop Nav Links */}
+        <nav id="navLinks" className="hidden md:flex items-center gap-3 md:gap-4">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id;
+            return <NavItem key={item.id} item={item} isActive={isActive} />;
+          })}
+        </nav>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={toggleMenu}
+          className="flex md:hidden flex-col justify-center items-center w-10 h-10 rounded-xl bg-neutral-900/60 border border-neutral-800/80 text-white transition-all duration-300 focus:outline-none z-50 cursor-pointer"
+          aria-label="Toggle Menu"
+        >
+          <div className="w-5 h-4 flex flex-col justify-between">
+            <span className={`h-0.5 w-full bg-emerald-400 rounded-full transition-transform duration-300 origin-left ${isMenuOpen ? 'rotate-45 translate-x-[2px]' : ''}`}></span>
+            <span className={`h-0.5 w-full bg-emerald-400 rounded-full transition-opacity duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`h-0.5 w-full bg-emerald-400 rounded-full transition-transform duration-300 origin-left ${isMenuOpen ? '-rotate-45 translate-x-[2px] -translate-y-[1px]' : ''}`}></span>
+          </div>
+        </button>
+      </header>
+
+      {/* Mobile Drawer Overlay */}
+      <div
+        className={`fixed inset-0 z-40 bg-black/95 backdrop-blur-lg flex flex-col items-center justify-center gap-8 transition-all duration-500 md:hidden ${
+          isMenuOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-full'
+        }`}
       >
-        <span className="btn-shine">
-          <span className="md:hidden">Sai</span>
-          <span className="hidden md:inline">Shanmukha Sai Chaitanya</span>
-        </span>
-      </a>
-      <nav id="navLinks" className="flex items-center gap-3 md:gap-4">
-        {navItems.map((item) => {
-          const isActive = activeSection === item.id;
-          return <NavItem key={item.id} item={item} isActive={isActive} />;
-        })}
-      </nav>
-    </header>
+        <div className="flex flex-col items-center gap-6">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setIsMenuOpen(false)}
+                className={`text-2xl font-bold tracking-wider transition-all duration-300 py-2 ${
+                  isActive 
+                    ? 'text-emerald-400 scale-110 drop-shadow-[0_0_12px_rgba(16,185,129,0.35)]' 
+                    : 'text-neutral-400 hover:text-white'
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }
 

@@ -169,6 +169,10 @@ export default function Skills() {
   const [nextHovered, setNextHovered] = useState(false);
   const [certHovered, setCertHovered] = useState(null);
 
+  // Touch Swipe State
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
   const len = skillsData.length;
 
   const nextSkill = () => {
@@ -177,6 +181,32 @@ export default function Skills() {
 
   const prevSkill = () => {
     setCurrentIndex((prev) => (prev - 1 + len) % len);
+  };
+
+  // Touch Swipe Handlers
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50; // swipe left -> next card
+    const isRightSwipe = distance < -50; // swipe right -> prev card
+
+    if (isLeftSwipe) {
+      nextSkill();
+    } else if (isRightSwipe) {
+      prevSkill();
+    }
+
+    // Reset touch coordinates
+    setTouchStart(0);
+    setTouchEnd(0);
   };
 
   const buttonGlow = 'drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))';
@@ -257,55 +287,63 @@ export default function Skills() {
         delay={150}
         className="relative w-full max-w-2xl h-[520px] sm:h-[450px] md:h-[350px] mx-auto perspective-1000 mb-28"
       >
-        {skillsData.map((skill, index) => {
-          const diff = (index - currentIndex + len) % len;
+        <div
+          className="w-full h-full relative"
+          style={{ transformStyle: 'preserve-3d' }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {skillsData.map((skill, index) => {
+            const diff = (index - currentIndex + len) % len;
 
-          let cardClass = 'card-hidden';
-          if (diff === 0) {
-            cardClass = 'card-active';
-          } else if (diff === 1) {
-            cardClass = 'card-next';
-          } else if (diff === len - 1) {
-            cardClass = 'card-prev';
-          }
+            let cardClass = 'card-hidden';
+            if (diff === 0) {
+              cardClass = 'card-active';
+            } else if (diff === 1) {
+              cardClass = 'card-next';
+            } else if (diff === len - 1) {
+              cardClass = 'card-prev';
+            }
 
-          return (
-            <div
-              key={skill.title}
-              className={`skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-center rounded-2xl p-[1px] ${cardClass}`}
-              style={{
-                filter: diff === 0 ? `drop-shadow(0 20px 40px ${skill.glow})` : undefined,
-                pointerEvents: diff === 0 ? 'auto' : 'none',
-              }}
-            >
-              <span className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${skill.gradientBorder} opacity-30`}></span>
-              <div className="relative w-full h-full bg-neutral-950 rounded-2xl p-6 md:p-8 flex flex-col justify-between">
-                <div>
-                  <div className="mb-4 flex items-center gap-4">
-                    <div className={`p-3 rounded-lg border ${skill.iconColorClass}`}>
-                      {skill.icon}
+            return (
+              <div
+                key={skill.title}
+                className={`skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-center rounded-2xl p-[1px] ${cardClass}`}
+                style={{
+                  filter: diff === 0 ? `drop-shadow(0 20px 40px ${skill.glow})` : undefined,
+                  pointerEvents: diff === 0 ? 'auto' : 'none',
+                }}
+              >
+                <span className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${skill.gradientBorder} opacity-30`}></span>
+                <div className="relative w-full h-full bg-neutral-950 rounded-2xl p-6 md:p-8 flex flex-col justify-between">
+                  <div>
+                    <div className="mb-4 flex items-center gap-4">
+                      <div className={`p-3 rounded-lg border ${skill.iconColorClass}`}>
+                        {skill.icon}
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white font-sans">{skill.title}</h3>
                     </div>
-                    <h3 className="text-xl md:text-2xl font-bold text-white font-sans">{skill.title}</h3>
+                    <p className="text-neutral-400 text-sm md:text-base font-light leading-relaxed font-sans mb-4">
+                      {skill.description}
+                    </p>
                   </div>
-                  <p className="text-neutral-400 text-sm md:text-base font-light leading-relaxed font-sans mb-4">
-                    {skill.description}
-                  </p>
-                </div>
 
-                <div className="flex flex-wrap gap-2.5 mt-auto">
-                  {skill.tags.map((tag) => (
-                    <span
-                      key={tag.text}
-                      className={`text-xs font-mono px-3 py-1.5 rounded-md bg-neutral-900/60 border transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 cursor-default ${tag.colorClass}`}
-                    >
-                      {tag.text}
-                    </span>
-                  ))}
+                  <div className="flex flex-wrap gap-2.5 mt-auto">
+                    {skill.tags.map((tag) => (
+                      <span
+                        key={tag.text}
+                        className={`text-xs font-mono px-3 py-1.5 rounded-md bg-neutral-900/60 border transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 cursor-default ${tag.colorClass}`}
+                      >
+                        {tag.text}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </ScrollReveal>
 
       {/* Certifications Section */}
