@@ -26,7 +26,7 @@ export default function Hero() {
         {/* Left Content Column */}
         <div className="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
           <ScrollReveal animation="fade-up" delay={100}>
-            <h1 className="text-3xl sm:text-4xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl xl:text-6xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent">
               Building Secure Systems. Automating Cloud Workflows.
             </h1>
           </ScrollReveal>
