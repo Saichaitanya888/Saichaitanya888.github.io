@@ -122,6 +122,66 @@ const skillsData = [
       { text: 'System Debugging', colorClass: 'text-pink-400 border-pink-500/20 hover:border-pink-400 hover:text-white' },
     ],
   },
+  {
+    title: 'Python Programming',
+    glow: 'rgba(56, 189, 248, 0.4)',
+    gradientBorder: 'from-sky-500/50 to-transparent',
+    iconColorClass: 'text-sky-400 bg-sky-500/10 border-sky-500/20',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke="currentColor"
+        className="w-7 h-7"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"
+        />
+      </svg>
+    ),
+    description:
+      'Solid grasp of Python core syntax, Object-Oriented Programming (OOPs), custom functions, and modular scripting for automation.',
+    tags: [
+      { text: 'OOPs Concepts', colorClass: 'text-sky-400 border-sky-500/20 hover:border-sky-400 hover:text-white' },
+      { text: 'Core Programming', colorClass: 'text-sky-400 border-sky-500/20 hover:border-sky-400 hover:text-white' },
+      { text: 'Scripting & Logic', colorClass: 'text-sky-400 border-sky-500/20 hover:border-sky-400 hover:text-white' },
+      { text: 'Variables & Loops', colorClass: 'text-sky-400 border-sky-500/20 hover:border-sky-400 hover:text-white' },
+    ],
+  },
+  {
+    title: 'Android App Development',
+    glow: 'rgba(16, 185, 129, 0.4)',
+    gradientBorder: 'from-emerald-500/50 to-transparent',
+    iconColorClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke="currentColor"
+        className="w-7 h-7"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-6 15h9"
+        />
+      </svg>
+    ),
+    description:
+      'Experience designing and building mobile applications in Android Studio using Java, including UI layouts, activity states, and native features.',
+    tags: [
+      { text: 'Android Studio', colorClass: 'text-emerald-400 border-emerald-500/20 hover:border-emerald-400 hover:text-white' },
+      { text: 'Java', colorClass: 'text-amber-500 border-amber-500/20 hover:border-amber-500 hover:text-white' },
+      { text: 'Mobile UI Design', colorClass: 'text-emerald-400 border-emerald-500/20 hover:border-emerald-400 hover:text-white' },
+      { text: 'App Lifecycle', colorClass: 'text-emerald-400 border-emerald-500/20 hover:border-emerald-400 hover:text-white' },
+    ],
+  },
 ];
 
 const certificationsData = [
@@ -333,7 +393,7 @@ export default function Skills() {
                     {skill.tags.map((tag) => (
                       <span
                         key={tag.text}
-                        className={`text-xs font-mono px-3 py-1.5 rounded-md bg-neutral-900/60 border transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 cursor-default ${tag.colorClass}`}
+                        className={`tech-tag ${tag.colorClass.replace('hover:text-white', '')}`}
                       >
                         {tag.text}
                       </span>

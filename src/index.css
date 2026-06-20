@@ -119,34 +119,78 @@ body {
 .tech-tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.625rem;
-  font-family: monospace;
-  font-size: 0.75rem;
-  background-color: rgba(9, 9, 11, 0.6);
-  border: 1px solid #27272a;
-  color: #a3a3a3;
-  border-radius: 0.375rem;
-  transition: all 0.3s ease;
+  gap: 0.375rem;
+  padding: 0.3rem 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.725rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #a3a3a3;
 }
 
-/* Global Hover effect (lifts the tag slightly and turns text white) */
+/* Dotted indicator */
+.tech-tag::before {
+  content: '';
+  display: inline-block;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 9999px;
+  background-color: currentColor;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+/* Global Hover effect */
 .tech-tag:hover {
-  transform: translateY(-2px);
-  border-color: currentColor;
+  transform: translateY(-2px) scale(1.02);
   color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* Specific Colors on Hover */
-.tag-aosp:hover { color: #22d3ee; border-color: #22d3ee; }
-.tag-gcp:hover { color: #4285f4; border-color: #4285f4; }
-.tag-bash:hover { color: #4ade80; border-color: #4ade80; }
-.tag-git:hover { color: #f97316; border-color: #f97316; }
-.tag-vertex:hover { color: #a855f7; border-color: #a855f7; }
-.tag-python:hover { color: #3776ab; border-color: #3776ab; }
-.tag-linux:hover { color: #fcc624; border-color: #fcc624; }
-.tag-security:hover { color: #f43f5e; border-color: #f43f5e; }
-.tag-netsec:hover { color: #10b981; border-color: #10b981; }
+.tech-tag:hover::before {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Specific Tag Colors & Glows */
+.tag-aosp { color: #22d3ee; border-color: rgba(34, 211, 238, 0.15); background-color: rgba(34, 211, 238, 0.03); }
+.tag-aosp:hover { border-color: #22d3ee; box-shadow: 0 0 12px rgba(34, 211, 238, 0.25); }
+
+.tag-gcp { color: #60a5fa; border-color: rgba(96, 165, 250, 0.15); background-color: rgba(96, 165, 250, 0.03); }
+.tag-gcp:hover { border-color: #60a5fa; box-shadow: 0 0 12px rgba(96, 165, 250, 0.25); }
+
+.tag-bash { color: #4ade80; border-color: rgba(74, 222, 128, 0.15); background-color: rgba(74, 222, 128, 0.03); }
+.tag-bash:hover { border-color: #4ade80; box-shadow: 0 0 12px rgba(74, 222, 128, 0.25); }
+
+.tag-git { color: #fb923c; border-color: rgba(251, 146, 60, 0.15); background-color: rgba(251, 146, 60, 0.03); }
+.tag-git:hover { border-color: #fb923c; box-shadow: 0 0 12px rgba(251, 146, 60, 0.25); }
+
+.tag-vertex { color: #c084fc; border-color: rgba(192, 132, 252, 0.15); background-color: rgba(192, 132, 252, 0.03); }
+.tag-vertex:hover { border-color: #c084fc; box-shadow: 0 0 12px rgba(192, 132, 252, 0.25); }
+
+.tag-python { color: #38bdf8; border-color: rgba(56, 189, 248, 0.15); background-color: rgba(56, 189, 248, 0.03); }
+.tag-python:hover { border-color: #38bdf8; box-shadow: 0 0 12px rgba(56, 189, 248, 0.25); }
+
+.tag-linux { color: #fbbf24; border-color: rgba(251, 191, 36, 0.15); background-color: rgba(251, 191, 36, 0.03); }
+.tag-linux:hover { border-color: #fbbf24; box-shadow: 0 0 12px rgba(251, 191, 36, 0.25); }
+
+.tag-security { color: #f43f5e; border-color: rgba(244, 63, 94, 0.15); background-color: rgba(244, 63, 94, 0.03); }
+.tag-security:hover { border-color: #f43f5e; box-shadow: 0 0 12px rgba(244, 63, 94, 0.25); }
+
+.tag-netsec { color: #34d399; border-color: rgba(52, 211, 153, 0.15); background-color: rgba(52, 211, 153, 0.03); }
+.tag-netsec:hover { border-color: #34d399; box-shadow: 0 0 12px rgba(52, 211, 153, 0.25); }
+
+/* Enable glow on hover for skills tags */
+.tech-tag.text-emerald-400:hover { box-shadow: 0 0 12px rgba(16, 185, 129, 0.25); }
+.tech-tag.text-cyan-400:hover { box-shadow: 0 0 12px rgba(6, 182, 212, 0.25); }
+.tech-tag.text-purple-400:hover { box-shadow: 0 0 12px rgba(168, 85, 247, 0.25); }
+.tech-tag.text-pink-400:hover { box-shadow: 0 0 12px rgba(236, 72, 153, 0.25); }
+.tech-tag.text-sky-400:hover { box-shadow: 0 0 12px rgba(56, 189, 248, 0.25); }
+.tech-tag.text-amber-500:hover { box-shadow: 0 0 12px rgba(245, 158, 11, 0.25); }
 
 /* --- COVERFLOW SKILL CAROUSEL CLASSES (o-O-o) --- */
 .card-active {
@@ -183,4 +227,63 @@ body {
   .card-prev {
     transform: translateX(-30%) scale(0.65);
   }
+}
+
+/* --- PRELOADER ANIMATIONS & EFFECTS --- */
+
+/* SVG Draw animation for Monogram */
+@keyframes svgDash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.animate-svg-draw {
+  animation: svgDash 2.0s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Pulsing scanner sweep for HUD */
+@keyframes sweepY {
+  0%, 100% {
+    transform: translateY(-20px);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translateY(280px);
+    opacity: 0.7;
+  }
+}
+.animate-sweep-y {
+  animation: sweepY 3.5s ease-in-out infinite;
+}
+
+/* Nexus orbit animation */
+@keyframes orbitClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-orbit-cw {
+  animation: orbitClockwise 8s linear infinite;
+}
+
+@keyframes orbitCounterClockwise {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+.animate-orbit-ccw {
+  animation: orbitCounterClockwise 12s linear infinite;
+}
+
+/* Nexus wave ripple */
+@keyframes pulseRipple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+.animate-pulse-ripple {
+  animation: pulseRipple 2.2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
 }

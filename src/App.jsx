@@ -8,9 +8,11 @@ import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
+import Preloader from './components/Preloader';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
+  const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
     const sections = document.querySelectorAll('section[id]');
@@ -41,6 +43,9 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen text-gray-100 font-sans overflow-x-hidden selection:bg-emerald-500/30 selection:text-white">
+      {/* Boot Preloader Screen */}
+      {showLoader && <Preloader onComplete={() => setShowLoader(false)} />}
+
       {/* Custom Trailing Cursor & Ambient Glow */}
       <CustomCursor />
 
