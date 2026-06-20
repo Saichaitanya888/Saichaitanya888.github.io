@@ -117,24 +117,20 @@ export default function Hero() {
               onMouseEnter={() => setImgHovered(true)}
               onMouseLeave={() => setImgHovered(false)}
             >
-              <div className="cosmic-flip-container w-full h-full relative z-10 p-1.5">
-                <div className="cosmic-flip-card">
-                  {/* Front (B&W Grayscale) */}
-                  <div className="cosmic-flip-front rounded-full bg-neutral-950 border border-neutral-900/50 overflow-hidden w-full h-full flex items-center justify-center">
-                    <img
-                      src="/Images/photo_2026-06-05_21-02-48.jpg"
-                      alt="Profile Front B&W"
-                      className="w-full h-full aspect-square object-cover rounded-full filter grayscale contrast-125"
-                    />
-                  </div>
-                  {/* Back (Color) */}
-                  <div className="cosmic-flip-back rounded-full bg-neutral-950 border border-neutral-900/50 overflow-hidden w-full h-full flex items-center justify-center">
-                    <img
-                      src="/Images/photo_2026-06-05_21-02-48.jpg"
-                      alt="Profile Back Color"
-                      className="w-full h-full aspect-square object-cover rounded-full filter contrast-110"
-                    />
-                  </div>
+              {/* Rotating Spark Border Wrapper */}
+              <div className="absolute inset-0 rounded-full overflow-hidden p-[2px] bg-neutral-950 flex items-center justify-center">
+                {/* Rotating Conic Gradient (The Spark) */}
+                <div 
+                  className="absolute inset-[-50%] bg-[conic-gradient(from_0deg,transparent_40%,#ffffff_50%,transparent_60%)] animate-[spin_4s_linear_infinite] z-0"
+                />
+                
+                {/* Inner Mask & Colorful PFP */}
+                <div className="absolute inset-[2.5px] rounded-full bg-neutral-950 overflow-hidden flex items-center justify-center z-10">
+                  <img
+                    src="/Images/photo_2026-06-05_21-02-48.jpg"
+                    alt="Profile Avatar"
+                    className="w-full h-full aspect-square object-cover rounded-full filter contrast-110"
+                  />
                 </div>
               </div>
             </div>

@@ -3,10 +3,10 @@ import { useState, useEffect, useRef } from 'react';
 export default function Navbar({ activeSection }) {
   const navItems = [
     { id: 'hero', label: 'Home' },
-    { id: 'console', label: 'Console' },
     { id: 'experience', label: 'Experience' },
     { id: 'projects', label: 'Projects' },
     { id: 'skills', label: 'Skills' },
+    { id: 'console', label: 'Console' },
     { id: 'contact', label: 'Contact' },
   ];
 

@@ -16,7 +16,7 @@ export default function App() {
     const sections = document.querySelectorAll('section[id]');
     const observerOptions = {
       root: null,
-      rootMargin: '-30% 0px -60% 0px',
+      rootMargin: '-15% 0px -45% 0px', // larger, balanced active zone for mobile viewports
       threshold: 0,
     };
 
@@ -25,6 +25,7 @@ export default function App() {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
           if (id) {
+            console.log("Intersecting active section:", id);
             setActiveSection(id);
           }
         }
@@ -52,10 +53,10 @@ export default function App() {
       {/* Content Layout wrapper */}
       <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
         <Hero />
-        <ConsoleSandbox />
         <Experience />
         <Projects />
         <Skills />
+        <ConsoleSandbox />
         <Contact />
       </main>
     </div>
