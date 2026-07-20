@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ScrollReveal from './ScrollReveal';
+import { projects } from '../constants';
 
 export default function Projects() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -14,86 +15,7 @@ export default function Projects() {
 
   const buttonGlow = 'drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))';
 
-  const projects = [
-    {
-      title: 'ezstaf Android Application',
-      type: 'Real-time Project',
-      terminalOutput: [
-        { text: 'Sai@devbox:~/ezstaf$ ./gradlew assembleDebug', color: 'text-neutral-500' },
-        { text: '[INFO] Building backend APIs and integrating ML models...', color: 'text-white' },
-        { text: '[SUCCESS] AI/ML models loaded successfully.', color: 'text-emerald-400 font-bold' },
-        { text: '[INFO] APK built successfully.', color: 'text-white' },
-      ],
-      description: [
-        'Working on a real-time Android application called ezstaf.',
-        'Developed and integrated robust backend APIs to support application features.',
-        'Implemented and integrated AI/ML components for advanced data processing and prediction.',
-      ],
-      tags: ['Android', 'Backend APIs', 'AI/ML', 'Java/Kotlin'],
-      colorClasses: {
-        badgeBorder: 'border-purple-500/30',
-        badgeBg: 'bg-purple-500/10',
-        badgeText: 'text-purple-400',
-        titleHover: 'group-hover:text-purple-300',
-        bullet: 'bg-purple-400',
-        shadow: 'rgba(168, 85, 247, 0.25)', // Softer glow
-        glowColor: '#a855f7',
-      },
-      gradient: 'from-purple-500/50 to-transparent',
-    },
-    {
-      title: 'Android Open Source Project (AOSP)',
-      type: 'Open Source',
-      terminalOutput: [
-        { text: 'Sai@devbox:~/Infy$ source build/envsetup.sh && lunch aosp_rmgtn2', color: 'text-neutral-500' },
-        { text: '[INFO] Starting build for Android 16...', color: 'text-white' },
-        { text: '[INFO] Parsing manifests and optimizing kernel.', color: 'text-white' },
-        { text: '[BUILD SUCCESS] target: Infinity-X_Bitra-ota.zip', color: 'text-emerald-400 font-bold' },
-      ],
-      description: [
-        'Built AOSP from source and ported custom ROMs for Realme GT Neo 2, optimizing kernel stability.',
-        'Utilized ADB Logcat and MIO for deep system-level debugging and security troubleshooting.',
-        'Leveraged Google Cloud (GCP) for automated build environments and high-speed compilation.',
-      ],
-      tags: ['AOSP', 'GCP', 'Bash', 'Git', 'Vertex AI'],
-      colorClasses: {
-        badgeBorder: 'border-cyan-500/30',
-        badgeBg: 'bg-cyan-500/10',
-        badgeText: 'text-cyan-400',
-        titleHover: 'group-hover:text-cyan-300',
-        bullet: 'bg-cyan-400',
-        shadow: 'rgba(6, 182, 212, 0.25)', // Softer glow
-        glowColor: '#06b6d4',
-      },
-      gradient: 'from-cyan-500/50 to-transparent',
-    },
-    {
-      title: 'Log Detection & Alerting',
-      type: 'Security Tool',
-      terminalOutput: [
-        { text: 'root@logengine-vm:~$ tail -f /var/log/syslog', color: 'text-neutral-500' },
-        { text: '[INFO] Ingested 1500 logs. No threats detected.', color: 'text-white' },
-        { text: '[WARN] Unrecognized user \'oracle\' from 192.168.1.100.', color: 'text-amber-400' },
-        { text: '[MITRE ATT&CK] T1078 Mapping identified: Valid Accounts.', color: 'text-emerald-400 font-bold' },
-      ],
-      description: [
-        'Developed a Python-based log engine that ingests and parses Linux system logs for security threats.',
-        'Implemented detection rules for brute-force attacks, privilege escalation, and port scanning.',
-        'Integrated MITRE ATT&CK mapping to categorize incidents and built an automated alert system.',
-      ],
-      tags: ['Python', 'Linux', 'CyberSecurity', 'Network Security'],
-      colorClasses: {
-        badgeBorder: 'border-emerald-500/30',
-        badgeBg: 'bg-emerald-500/10',
-        badgeText: 'text-emerald-400',
-        titleHover: 'group-hover:text-emerald-300',
-        bullet: 'bg-emerald-400',
-        shadow: 'rgba(16, 185, 129, 0.25)', // Softer glow
-        glowColor: '#10b981',
-      },
-      gradient: 'from-emerald-500/50 to-transparent',
-    }
-  ];
+  // Data imported from constants
 
   // Down arrow / Swipe: Next project
   const handleNext = (dir = null) => {
