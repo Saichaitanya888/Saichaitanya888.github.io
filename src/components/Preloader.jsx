@@ -59,7 +59,7 @@ export default function Preloader({ onComplete }) {
         
         {/* Main Status Code */}
         <h1 
-          className={`text-6xl md:text-8xl font-black font-mono tracking-widest text-center transition-colors duration-300 ${
+          className={`text-4xl sm:text-5xl md:text-8xl font-black font-mono tracking-[0.2em] md:tracking-widest text-center transition-colors duration-300 ${
             phase === '404' ? 'text-red-500 animate-pulse' : 
             phase === 'decrypting' ? 'text-cyan-500' : 
             'text-emerald-500'
@@ -74,8 +74,8 @@ export default function Preloader({ onComplete }) {
         </h1>
         
         {/* Subtext Logging */}
-        <div className="h-8 flex items-center justify-center">
-          <p className={`text-sm md:text-xl font-mono font-bold tracking-widest transition-colors duration-300 ${
+        <div className="h-10 flex items-center justify-center px-4 text-center w-full">
+          <p className={`text-[10px] sm:text-xs md:text-xl font-mono font-bold tracking-widest transition-colors duration-300 ${
             phase === '404' ? 'text-red-400' : 
             phase === 'decrypting' ? 'text-cyan-400 animate-pulse' : 
             'text-emerald-400'

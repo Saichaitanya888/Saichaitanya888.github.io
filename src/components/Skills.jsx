@@ -231,7 +231,8 @@ export default function Skills() {
 
   // Touch Swipe State
   const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
+  const [touchCurrent, setTouchCurrent] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   const len = skillsData.length;
 
@@ -246,17 +247,20 @@ export default function Skills() {
   // Touch Swipe Handlers
   const handleTouchStart = (e) => {
     setTouchStart(e.targetTouches[0].clientX);
+    setTouchCurrent(e.targetTouches[0].clientX);
+    setIsDragging(true);
   };
 
   const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    setTouchCurrent(e.targetTouches[0].clientX);
   };
 
   const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50; // swipe left -> next card
-    const isRightSwipe = distance < -50; // swipe right -> prev card
+    setIsDragging(false);
+    if (!touchStart || !touchCurrent) return;
+    const distance = touchStart - touchCurrent;
+    const isLeftSwipe = distance > 40; // swipe left -> next card
+    const isRightSwipe = distance < -40; // swipe right -> prev card
 
     if (isLeftSwipe) {
       nextSkill();
@@ -266,7 +270,7 @@ export default function Skills() {
 
     // Reset touch coordinates
     setTouchStart(0);
-    setTouchEnd(0);
+    setTouchCurrent(0);
   };
 
   const buttonGlow = 'drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))';
@@ -348,7 +352,7 @@ export default function Skills() {
         className="relative w-full max-w-2xl h-[520px] sm:h-[450px] md:h-[350px] mx-auto perspective-1000 mb-28"
       >
         <div
-          className="w-full h-full relative"
+          className="w-full h-full relative touch-pan-y"
           style={{ transformStyle: 'preserve-3d' }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -366,6 +370,11 @@ export default function Skills() {
               cardClass = 'card-prev';
             }
 
+            let dragOffset = 0;
+            if (diff === 0 && isDragging && touchStart) {
+              dragOffset = touchCurrent - touchStart;
+            }
+
             return (
               <div
                 key={skill.title}
@@ -373,6 +382,8 @@ export default function Skills() {
                 style={{
                   filter: diff === 0 ? `drop-shadow(0 20px 40px ${skill.glow})` : undefined,
                   pointerEvents: diff === 0 ? 'auto' : 'none',
+                  transform: diff === 0 && isDragging ? `translateX(${dragOffset}px) scale(1) translateZ(0)` : undefined,
+                  transition: diff === 0 && isDragging ? 'none' : 'all 0.7s cubic-bezier(0.25,1,0.5,1)'
                 }}
               >
                 <span className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${skill.gradientBorder} opacity-30`}></span>
