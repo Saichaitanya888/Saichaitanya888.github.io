@@ -12,6 +12,13 @@ body {
   overflow-x: hidden;
 }
 
+/* Hide default cursor on desktop to use CustomCursor */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
 /* --- NAME TEXT SHINE EFFECT --- */
 .btn-shine {
   background: linear-gradient(to right, #525252 0%, #10b981 20%, #06b6d4 40%, #ffffff 50%, #0ea5e9 60%, #10b981 80%, #525252 100%);

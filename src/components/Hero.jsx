@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ScrollReveal from './ScrollReveal';
+import MorphingText from './MorphingText';
 
 export default function Hero() {
   const [btn1Hovered, setBtn1Hovered] = useState(false);
@@ -26,8 +27,18 @@ export default function Hero() {
         {/* Left Content Column */}
         <div className="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
           <ScrollReveal animation="fade-up" delay={100}>
-            <h1 className="text-2xl sm:text-3xl md:text-5xl xl:text-6xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent">
-              Building Secure Systems. Automating Cloud Workflows.
+            <h1 className="text-xl sm:text-2xl md:text-4xl xl:text-5xl font-extrabold tracking-tight leading-tight text-white flex flex-col gap-2">
+              <span>Building</span>
+              <MorphingText 
+                texts={[
+                  "Secure Systems.",
+                  "Cloud Workflows.",
+                  "Security Operations.",
+                  "Linux Architectures.",
+                  "Automated Solutions."
+                ]} 
+                className="text-emerald-400" 
+              />
             </h1>
           </ScrollReveal>
           
@@ -40,19 +51,25 @@ export default function Hero() {
           {/* Action Buttons */}
           <ScrollReveal animation="fade-up" delay={200}>
             <div className="flex flex-wrap items-center gap-4 mt-4 self-center md:self-start">
-              <div className="relative group">
+              <div className="relative group rounded-2xl">
                 <a
-                  href="#projects"
-                  className="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
+                  href="#experience"
+                  className="relative inline-block p-[1px] font-semibold leading-6 text-white bg-neutral-800/40 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 overflow-hidden"
                   style={{
-                    transition: 'all 0.3s ease-in-out',
-                    filter: btn1Hovered ? buttonFilter : 'none',
+                    boxShadow: btn1Hovered ? '0 0 15px rgba(16, 185, 129, 0.45)' : 'none',
                   }}
                   onMouseEnter={() => setBtn1Hovered(true)}
                   onMouseLeave={() => setBtn1Hovered(false)}
                 >
-                  <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                  <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950 border border-neutral-900/50">
+                  {/* Border Beam (Hover) */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    <div 
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] aspect-square animate-[spin_2s_linear_infinite]"
+                      style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(16, 185, 129, 1) 100%)' }}
+                    />
+                  </div>
+                  
+                  <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
                     <div className="relative z-10 flex items-center space-x-3">
                       <span className="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
                         Begin Journey
@@ -70,30 +87,36 @@ export default function Hero() {
                 </a>
               </div>
 
-              <div className="relative group">
+              <div className="relative group rounded-2xl">
                 <a
                   href="/sourcre/shanmukha_sai_chaitanya_resume.pdf"
                   target="_blank"
                   rel="noreferrer"
-                  className="relative inline-block p-px font-semibold leading-6 text-white bg-neutral-900 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
+                  className="relative inline-block p-[1px] font-semibold leading-6 text-white bg-neutral-800/40 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 overflow-hidden"
                   style={{
-                    transition: 'all 0.3s ease-in-out',
-                    filter: btn2Hovered ? buttonFilter : 'none',
+                    boxShadow: btn2Hovered ? '0 0 15px rgba(6, 182, 212, 0.45)' : 'none',
                   }}
                   onMouseEnter={() => setBtn2Hovered(true)}
                   onMouseLeave={() => setBtn2Hovered(false)}
                 >
-                  <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
-                  <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950 border border-neutral-900/50">
+                  {/* Border Beam (Hover) */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    <div 
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] aspect-square animate-[spin_2s_linear_infinite]"
+                      style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(6, 182, 212, 1) 100%)' }}
+                    />
+                  </div>
+                  
+                  <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
                     <div className="relative z-10 flex items-center space-x-3">
-                      <span className="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
+                      <span className="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-cyan-300">
                         Resume
                       </span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="w-5 h-5 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300"
+                        className="w-5 h-5 transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-cyan-300"
                       >
                         <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path>
                       </svg>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import FlickeringCanvas from './components/FlickeringCanvas';
+import Particles from './components/Particles';
+import GlyphMatrix from './components/GlyphMatrix';
 import CustomCursor from './components/CustomCursor';
 import Hero from './components/Hero';
 import ConsoleSandbox from './components/ConsoleSandbox';
@@ -13,6 +15,7 @@ import Preloader from './components/Preloader';
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
   const [showLoader, setShowLoader] = useState(true);
+  const [bgType, setBgType] = useState('particles'); // Default to particles
 
   useEffect(() => {
     const sections = document.querySelectorAll('section[id]');
@@ -47,13 +50,35 @@ export default function App() {
       {showLoader && <Preloader onComplete={() => setShowLoader(false)} />}
 
       {/* Custom Trailing Cursor & Ambient Glow */}
-      <CustomCursor />
+      <CustomCursor bgType={bgType} />
 
-      {/* Background Flickering Sub-pixel Grid */}
-      <FlickeringCanvas />
+      {/* Background Effect */}
+      {bgType === 'particles' && (
+        <Particles
+          className="fixed inset-0 z-0 h-full w-full opacity-70"
+          quantity={800}
+          ease={80}
+          color="#ffffff"
+          refresh
+        />
+      )}
+      {bgType === 'glyph' && (
+        <GlyphMatrix
+          className="fixed inset-0 z-0 h-full w-full opacity-30"
+          glyphs="01·•+*/\<>="
+          cellSize={14}
+          mutationRate={0.04}
+          interval={90}
+          fadeBottom={0.6}
+          color="#ffffff"
+        />
+      )}
+      {bgType === 'flicker' && (
+        <FlickeringCanvas />
+      )}
 
       {/* Navigation Header */}
-      <Navbar activeSection={activeSection} />
+      <Navbar activeSection={activeSection} bgType={bgType} setBgType={setBgType} />
 
       {/* Content Layout wrapper */}
       <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">

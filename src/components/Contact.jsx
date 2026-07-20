@@ -43,15 +43,22 @@ export default function Contact() {
             href="https://mail.google.com/mail/?view=cm&fs=1&to=pothulashanmukhasaichaitanya@gmail.com"
             target="_blank"
             rel="noreferrer"
-            className="group relative inline-block p-px font-semibold rounded-2xl transition-transform duration-300 hover:scale-105"
+            className="group relative inline-block p-[1px] font-semibold rounded-2xl transition-transform duration-300 hover:scale-105 overflow-hidden bg-neutral-800/40"
             style={{
-              filter: handshakeHovered ? handshakeGlow : 'none',
+              boxShadow: handshakeHovered ? '0 0 15px rgba(16, 185, 129, 0.45)' : 'none',
             }}
             onMouseEnter={() => setHandshakeHovered(true)}
             onMouseLeave={() => setHandshakeHovered(false)}
           >
-            <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-sky-600 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></span>
-            <span className="relative z-10 flex items-center gap-3 px-8 py-4 rounded-2xl bg-neutral-950 text-white tracking-wide border border-neutral-900/50 group-hover:text-emerald-300 transition-colors duration-500">
+            {/* Border Beam (Hover) */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+              <div 
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] aspect-square animate-[spin_2s_linear_infinite]"
+                style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(16, 185, 129, 1) 100%)' }}
+              />
+            </div>
+            
+            <span className="relative z-10 flex items-center gap-3 px-8 py-4 rounded-2xl bg-neutral-950 text-white tracking-wide group-hover:text-emerald-300 transition-colors duration-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
