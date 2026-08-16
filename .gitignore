@@ -12,6 +12,10 @@ dist
 dist-ssr
 old-portfolio
 *.local
+.env
+.env.*
+scratch_*.py
+temp_*.txt
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +27,4 @@ old-portfolio
 *.njsproj
 *.sln
 *.sw?
+

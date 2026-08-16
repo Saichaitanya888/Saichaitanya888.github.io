@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import ScrollReveal from './ScrollReveal';
+import { evaluate } from 'mathjs';
 
 export default function ConsoleSandbox() {
   const [activeTab, setActiveTab] = useState('siem'); // 'siem' or 'terminal'
@@ -22,9 +23,9 @@ export default function ConsoleSandbox() {
 
       {/* Main Console Container */}
       <ScrollReveal animation="zoom-in" delay={150} className="w-full max-w-3xl px-4">
-        <div className="w-full rounded-2xl border border-neutral-800 bg-neutral-950 overflow-hidden shadow-2xl relative z-10 flex flex-col h-[520px]">
+        <div className="w-full rounded-3xl bg-black border border-neutral-800 overflow-hidden relative z-10 flex flex-col h-[520px]">
           {/* Header Tab Bar */}
-          <div className="flex items-center justify-between bg-neutral-900/60 px-4 border-b border-neutral-900">
+          <div className="flex items-center justify-between bg-black/60 px-4 border-b border-neutral-800">
             {/* Mock Windows Controls */}
             <div className="flex gap-1.5 py-3">
               <span className="w-3 h-3 rounded-full bg-rose-500/80"></span>
@@ -186,7 +187,7 @@ function SiemPanel() {
       {/* Logs Viewport */}
       <div
         ref={logContainerRef}
-        className="flex-1 bg-black rounded-xl p-4 border border-neutral-900/60 overflow-y-auto mb-4 text-xs md:text-sm text-neutral-300 space-y-1.5 scrollbar-thin scrollbar-thumb-neutral-900"
+        className="flex-1 bg-[#121520]/50 rounded-xl p-4 border border-[#00FF88]/20 overflow-y-auto mb-4 text-xs md:text-sm text-[#00FF88] space-y-1.5 scrollbar-thin scrollbar-thumb-neutral-900"
       >
         {logs.map((log, idx) => {
           let color = 'text-neutral-400';
@@ -287,6 +288,7 @@ function TerminalPanel() {
           { type: 'output', text: '  about      - Display brief bio overview.' },
           { type: 'output', text: '  skills     - Render technical competencies.' },
           { type: 'output', text: '  experience - Print work/education credentials.' },
+          { type: 'output', text: '  calc       - Evaluate a mathematical expression.' },
           { type: 'output', text: '  clear      - Wipe shell logs.' },
           { type: 'output', text: '  matrix     - Activate sub-pixel digital rain.' },
         ];
@@ -328,7 +330,15 @@ function TerminalPanel() {
         ];
         break;
       default:
-        if (command.startsWith('sudo')) {
+        if (command.startsWith('calc ') || command.startsWith('math ')) {
+          const expression = inputVal.substring(4).trim();
+          try {
+            const result = evaluate(expression);
+            reply = [{ type: 'output', text: `Result: ${result}` }];
+          } catch (err) {
+            reply = [{ type: 'output', text: `Math Error: Invalid expression.` }];
+          }
+        } else if (command.startsWith('sudo')) {
           reply = [{ type: 'output', text: 'Permission Denied: User "guest" lacks root privileges.' }];
         } else {
           reply = [{ type: 'output', text: `Shell error: Command not found: "${command}". Try "help".` }];
@@ -344,13 +354,13 @@ function TerminalPanel() {
       {/* Shell History Viewport */}
       <div
         ref={historyContainerRef}
-        className="flex-1 overflow-y-auto space-y-2 text-xs md:text-sm text-cyan-400 p-2 scrollbar-thin scrollbar-thumb-neutral-900"
+        className="flex-1 overflow-y-auto space-y-2 text-xs md:text-sm text-[#00FF88] p-2 scrollbar-thin scrollbar-thumb-neutral-900"
       >
         {history.map((item, idx) => (
           <div key={idx}>
             {item.type === 'input' ? (
-              <p className="text-white">
-                <span className="text-neutral-500">Sai@devbox:~$</span> {item.text}
+              <p className="text-[#00FF88]">
+                <span className="text-[#00FF88] font-bold">Sai@devbox:~$</span> {item.text}
               </p>
             ) : (
               <p className="whitespace-pre-wrap leading-relaxed font-light">{item.text}</p>
@@ -361,14 +371,14 @@ function TerminalPanel() {
 
       {/* Shell Input Row */}
       <form onSubmit={handleCommandSubmit} className="flex items-center gap-2 border-t border-neutral-900 pt-3">
-        <span className="text-neutral-500 shrink-0 select-none">Sai@devbox:~$</span>
+        <span className="text-[#00FF88] font-bold shrink-0 select-none">Sai@devbox:~$</span>
         <input
           ref={inputRef}
           type="text"
           value={inputVal}
           onChange={(e) => setInputVal(e.target.value)}
-          className="flex-1 bg-transparent border-none outline-none text-white focus:ring-0 font-mono caret-cyan-400 p-0"
-          placeholder='Type a command (try "help")...'
+          className="flex-1 bg-transparent border-none outline-none text-[#00FF88] focus:ring-0 font-mono caret-[#00FF88] p-0"
+          placeholder='Type a command...'
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="none"

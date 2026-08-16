@@ -1,16 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ScrollReveal from './ScrollReveal';
 
 export default function Contact() {
   const [handshakeHovered, setHandshakeHovered] = useState(false);
-  const [githubHovered, setGithubHovered] = useState(false);
-  const [telegramHovered, setTelegramHovered] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isPointerFine, setIsPointerFine] = useState(false);
 
   const handshakeGlow = 'drop-shadow(0 0 30px rgba(16, 185, 129, 0.4))';
-  const githubGlow = 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.4))';
-  const telegramGlow = 'drop-shadow(0 0 15px rgba(14, 165, 233, 0.4))';
-
   const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsPointerFine(window.matchMedia('(pointer: fine)').matches);
+    }
+  }, []);
+
+  const socials = [
+    {
+      name: 'GitHub',
+      url: 'https://github.com/Saichaitanya888',
+      hoverBorder: 'hover:border-cyan-500/50',
+      glow: 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.4))',
+      icon: (
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+        </svg>
+      )
+    },
+    {
+      name: 'Telegram',
+      url: 'https://t.me/Saichaitanya888',
+      hoverBorder: 'hover:border-sky-500/50',
+      glow: 'drop-shadow(0 0 15px rgba(14, 165, 233, 0.4))',
+      icon: (
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+        </svg>
+      )
+    }
+  ];
+
+  const getScale = (index) => {
+    if (!isPointerFine || hoveredIndex === null) return 1;
+    const dist = Math.abs(hoveredIndex - index);
+    if (dist === 0) return 1.3;
+    if (dist === 1) return 1.12;
+    return 0.95;
+  };
 
   return (
     <section
@@ -50,15 +86,22 @@ export default function Contact() {
             onMouseEnter={() => setHandshakeHovered(true)}
             onMouseLeave={() => setHandshakeHovered(false)}
           >
-            {/* Border Beam (Hover) */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+            {/* Border Beam (Hover) - Masked */}
+            <div 
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl p-[1px]"
+              style={{
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+              }}
+            >
               <div 
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] aspect-square animate-[spin_2s_linear_infinite]"
                 style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(16, 185, 129, 1) 100%)' }}
               />
             </div>
             
-            <span className="relative z-10 flex items-center gap-3 px-8 py-4 rounded-2xl bg-neutral-950 text-white tracking-wide group-hover:text-emerald-300 transition-colors duration-500">
+            <span className="relative z-10 flex items-center gap-3 px-8 py-4 rounded-2xl bg-black text-white tracking-wide group-hover:text-emerald-300 transition-colors duration-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -78,52 +121,48 @@ export default function Contact() {
           </a>
         </ScrollReveal>
 
-        {/* Social Icons */}
-        <div className="flex gap-4">
-          {/* GitHub */}
-          <ScrollReveal animation="fade-up" delay={240}>
-            <a
-              href="https://github.com/Saichaitanya888"
-              target="_blank"
-              rel="noreferrer"
-              className="p-4 rounded-2xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-cyan-500/50 transition-all duration-300 hover:scale-110 block"
-              style={{
-                filter: githubHovered ? githubGlow : 'none',
-              }}
-              onMouseEnter={() => setGithubHovered(true)}
-              onMouseLeave={() => setGithubHovered(false)}
-              aria-label="GitHub Profile"
-            >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  fillRule="evenodd"
-                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </a>
-          </ScrollReveal>
+        {/* Social Dock */}
+        <ScrollReveal animation="fade-up" delay={240}>
+          <div 
+            className="flex items-center gap-4"
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {socials.map((social, idx) => {
+              const scale = getScale(idx);
+              const isHovered = hoveredIndex === idx;
+              return (
+                <div
+                  key={social.name}
+                  className="relative flex items-center justify-center"
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                >
+                  {/* Tooltip */}
+                  <div 
+                    className={`absolute -top-12 left-1/2 -translate-x-1/2 px-2.5 py-1 bg-neutral-950 border border-neutral-800 text-[10px] font-mono font-bold text-white rounded-lg transition-all duration-200 pointer-events-none ${
+                      isHovered ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-90'
+                    }`}
+                  >
+                    {social.name}
+                  </div>
 
-          {/* Telegram */}
-          <ScrollReveal animation="fade-up" delay={320}>
-            <a
-              href="https://t.me/Saichaitanya888"
-              target="_blank"
-              rel="noreferrer"
-              className="p-4 rounded-2xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-sky-500/50 transition-all duration-300 hover:scale-110 block"
-              style={{
-                filter: telegramHovered ? telegramGlow : 'none',
-              }}
-              onMouseEnter={() => setTelegramHovered(true)}
-              onMouseLeave={() => setTelegramHovered(false)}
-              aria-label="Telegram Message"
-            >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
-              </svg>
-            </a>
-          </ScrollReveal>
-        </div>
+                  <a
+                    href={social.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`w-14 h-14 flex items-center justify-center rounded-2xl bg-black border border-neutral-800 text-neutral-400 hover:text-white transition-all duration-300 active:scale-95 ${social.hoverBorder}`}
+                    style={{
+                      transform: `scale(${scale}) translateY(${isHovered ? '-4px' : '0px'})`,
+                      filter: isHovered ? social.glow : 'none',
+                    }}
+                    aria-label={`${social.name} Profile`}
+                  >
+                    {social.icon}
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        </ScrollReveal>
       </div>
 
       {/* Footer Branding */}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ScrollReveal from './ScrollReveal';
 import MorphingText from './MorphingText';
+import BorderGlow from './BorderGlow';
 
 export default function Hero() {
   const [btn1Hovered, setBtn1Hovered] = useState(false);
@@ -13,7 +14,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="min-h-screen flex flex-col justify-center items-center md:items-start text-center md:text-left gap-6 pt-28 md:pt-32 pb-16"
+      className="min-h-screen flex flex-col justify-center items-center md:items-start text-center md:text-left gap-6 pt-16 md:pt-20 pb-32 md:pb-48"
     >
       {/* Badge Indicator */}
       <ScrollReveal animation="fade-up" delay={50}>
@@ -26,6 +27,7 @@ export default function Hero() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full items-center">
         {/* Left Content Column */}
         <div className="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
+          
           <ScrollReveal animation="fade-up" delay={100}>
             <h1 className="text-xl sm:text-2xl md:text-4xl xl:text-5xl font-extrabold tracking-tight leading-tight text-white flex flex-col gap-2">
               <span>Building</span>
@@ -43,7 +45,7 @@ export default function Hero() {
           </ScrollReveal>
           
           <ScrollReveal animation="fade-up" delay={150}>
-            <p className="text-sm sm:text-base md:text-xl text-neutral-400 font-light leading-relaxed">
+            <p className="text-sm sm:text-base md:text-xl text-gray-200 font-medium leading-relaxed drop-shadow-md">
               I am a Computer Science graduate specializing in Linux systems, Google Cloud Platform (GCP), security operations (SIEM/SOAR), and automation. I focus on optimizing kernel stability, parsing logs to track threats, and engineering reliable software solutions.
             </p>
           </ScrollReveal>
@@ -54,23 +56,21 @@ export default function Hero() {
               <div className="relative group rounded-2xl">
                 <a
                   href="#experience"
-                  className="relative inline-block p-[1px] font-semibold leading-6 text-white bg-neutral-800/40 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 overflow-hidden"
-                  style={{
-                    boxShadow: btn1Hovered ? '0 0 15px rgba(16, 185, 129, 0.45)' : 'none',
-                  }}
-                  onMouseEnter={() => setBtn1Hovered(true)}
-                  onMouseLeave={() => setBtn1Hovered(false)}
+                  className="relative inline-block transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
                 >
-                  {/* Border Beam (Hover) */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    <div 
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] aspect-square animate-[spin_2s_linear_infinite]"
-                      style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(16, 185, 129, 1) 100%)' }}
-                    />
-                  </div>
-                  
-                  <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div className="relative z-10 flex items-center space-x-3">
+                  <BorderGlow
+                    backgroundColor="#120F17"
+                    edgeSensitivity={30}
+                    glowColor="160 84 40"
+                    borderRadius={16}
+                    glowRadius={6}
+                    glowIntensity={0.6}
+                    coneSpread={25}
+                    animated={false}
+                    fillOpacity={0}
+                    colors={['#10b981', '#06b6d4', '#10b981']}
+                  >
+                    <div className="relative z-10 px-6 py-3 font-semibold leading-6 text-white flex items-center space-x-3">
                       <span className="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-emerald-300">
                         Begin Journey
                       </span>
@@ -83,7 +83,7 @@ export default function Hero() {
                         <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
                       </svg>
                     </div>
-                  </span>
+                  </BorderGlow>
                 </a>
               </div>
 
@@ -92,23 +92,21 @@ export default function Hero() {
                   href="/sourcre/shanmukha_sai_chaitanya_resume.pdf"
                   target="_blank"
                   rel="noreferrer"
-                  className="relative inline-block p-[1px] font-semibold leading-6 text-white bg-neutral-800/40 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 overflow-hidden"
-                  style={{
-                    boxShadow: btn2Hovered ? '0 0 15px rgba(6, 182, 212, 0.45)' : 'none',
-                  }}
-                  onMouseEnter={() => setBtn2Hovered(true)}
-                  onMouseLeave={() => setBtn2Hovered(false)}
+                  className="relative inline-block transition-all duration-300 ease-in-out hover:scale-105 active:scale-95"
                 >
-                  {/* Border Beam (Hover) */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    <div 
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] aspect-square animate-[spin_2s_linear_infinite]"
-                      style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(6, 182, 212, 1) 100%)' }}
-                    />
-                  </div>
-                  
-                  <span className="relative z-10 block px-6 py-3 rounded-2xl bg-neutral-950">
-                    <div className="relative z-10 flex items-center space-x-3">
+                  <BorderGlow
+                    backgroundColor="#120F17"
+                    edgeSensitivity={30}
+                    glowColor="189 94 43"
+                    borderRadius={16}
+                    glowRadius={6}
+                    glowIntensity={0.6}
+                    coneSpread={25}
+                    animated={false}
+                    fillOpacity={0}
+                    colors={['#06b6d4', '#38bdf8', '#06b6d4']}
+                  >
+                    <div className="relative z-10 px-6 py-3 font-semibold leading-6 text-white flex items-center space-x-3">
                       <span className="transition-all duration-500 group-hover:translate-x-1.5 group-hover:text-cyan-300">
                         Resume
                       </span>
@@ -121,7 +119,7 @@ export default function Hero() {
                         <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path>
                       </svg>
                     </div>
-                  </span>
+                  </BorderGlow>
                 </a>
               </div>
             </div>
@@ -147,12 +145,15 @@ export default function Hero() {
                   className="absolute inset-[-50%] bg-[conic-gradient(from_0deg,transparent_40%,#ffffff_50%,transparent_60%)] animate-[spin_4s_linear_infinite] z-0"
                 />
                 
-                {/* Inner Mask & Colorful PFP */}
+                {/* Inner Mask & Profile Image */}
                 <div className="absolute inset-[2.5px] rounded-full bg-neutral-950 overflow-hidden flex items-center justify-center z-10">
                   <img
                     src="/Images/photo_2026-06-05_21-02-48.jpg"
-                    alt="Profile Avatar"
-                    className="w-full h-full aspect-square object-cover rounded-full filter contrast-110"
+                    alt="Shanmukha Sai Chaitanya"
+                    className="w-full h-full object-cover object-center transform transition-transform duration-700 hover:scale-110"
+                    style={{
+                      objectPosition: '50% 25%'
+                    }}
                   />
                 </div>
               </div>

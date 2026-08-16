@@ -147,7 +147,7 @@ export default function Projects() {
                 <div
                   className={`group relative rounded-2xl p-[1px] flex flex-col h-full transition-all duration-500`}
                   style={{
-                    boxShadow: offset === 0 ? `0 20px 40px -10px ${project.colorClasses.shadow}, 0 0 20px ${project.colorClasses.shadow}` : '0 10px 30px -10px rgba(0,0,0,0.5)',
+                    boxShadow: offset === 0 ? '0 20px 40px -10px rgba(0,0,0,0.8)' : '0 10px 30px -10px rgba(0,0,0,0.5)',
                   }}
                 >
                   <span className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${project.gradient} opacity-40 transition-opacity duration-500`}></span>

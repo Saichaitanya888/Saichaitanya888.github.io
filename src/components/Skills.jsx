@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import ScrollReveal from './ScrollReveal';
-
 import { skillsData, certificationsData } from '../constants';
 
 export default function Skills() {
@@ -160,7 +159,7 @@ export default function Skills() {
                 key={skill.title}
                 className={`skill-card absolute top-0 left-0 w-full h-full transition-all duration-700 ease-in-out origin-center rounded-2xl p-[1px] ${cardClass}`}
                 style={{
-                  filter: diff === 0 ? `drop-shadow(0 20px 40px ${skill.glow})` : undefined,
+                  filter: diff === 0 ? 'drop-shadow(0 20px 40px rgba(0,0,0,0.8))' : undefined,
                   pointerEvents: diff === 0 ? 'auto' : 'none',
                   transform: diff === 0 && isDragging ? `translateX(${dragOffset}px) scale(1) translateZ(0)` : undefined,
                   transition: diff === 0 && isDragging ? 'none' : 'all 0.7s cubic-bezier(0.25,1,0.5,1)'
@@ -223,13 +222,10 @@ export default function Skills() {
               >
                 <div
                   className="group relative rounded-xl p-[1px] transition-all duration-300 hover:scale-[1.02] flex flex-col h-full"
-                  style={{
-                    boxShadow: isHovered ? certShadow : 'none',
-                  }}
                   onMouseEnter={() => setCertHovered(index)}
                   onMouseLeave={() => setCertHovered(null)}
                 >
-                  <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-neutral-800 to-transparent opacity-40 group-hover:opacity-100 group-hover:from-emerald-500/30 group-hover:to-cyan-500/20 transition-all duration-500"></span>
+                  <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-neutral-800 to-transparent opacity-40 transition-all duration-500"></span>
                   <div className="relative flex-grow w-full h-full bg-neutral-950 border border-neutral-900/50 rounded-xl p-5 flex items-start gap-4">
                     <div className="p-2.5 bg-neutral-900 border border-neutral-800 rounded-lg shrink-0">
                       {cert.icon}

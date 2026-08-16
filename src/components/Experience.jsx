@@ -28,21 +28,12 @@ export default function Experience() {
             <ScrollReveal key={index} animation="slide-up" className="flex flex-col" delay={item.delay}>
               <div
                 className="group relative rounded-2xl p-[1px] transition-all duration-500 hover:-translate-y-2 flex flex-col h-full overflow-hidden bg-neutral-800/40"
-                style={{
-                  boxShadow: isHovered ? `0 0 20px ${item.hoverGlow}` : 'none',
-                }}
                 onMouseEnter={() => setHoveredIdx(index)}
                 onMouseLeave={() => setHoveredIdx(null)}
               >
                 <span className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.gradient} to-transparent opacity-30 group-hover:opacity-0 transition-opacity duration-500`}></span>
                 
-                {/* Border Beam (Hover) */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <div 
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] aspect-square animate-[spin_3s_linear_infinite]"
-                    style={{ background: `conic-gradient(from 0deg, transparent 70%, ${item.borderBeam} 100%)` }}
-                  />
-                </div>
+                {/* Border Beam (Hover) removed as per user request */}
 
                 <div className="relative flex-1 w-full h-full bg-neutral-950 rounded-2xl p-5 lg:p-6 flex flex-col justify-between">
                   <div>
